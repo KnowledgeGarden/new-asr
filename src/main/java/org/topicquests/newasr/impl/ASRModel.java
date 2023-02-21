@@ -39,4 +39,15 @@ public class ASRModel implements IAsrModel {
 		return result;
 	}
 
+	///////////////////////////////
+	// A mechanism for bootstrapping the WordGram graph
+	// This means we need access to the Dictionary
+	///////////////////////////////
+	@Override
+	public IResult processTerm(String term, String pos) {
+		IResult result = new ResultPojo();
+		// TODO Auto-generated method stub
+		return result;
+	}
+
 }

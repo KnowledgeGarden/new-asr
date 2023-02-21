@@ -18,4 +18,12 @@ public interface IAsrModel {
 	 * @return
 	 */
 	IResult processSentence(long sentenceId, String sentence);
+	
+	/**
+	 * Create an {@link IWordGram} from {@code term} -used for bootstrapping
+	 * @param term
+	 * @param pos
+	 * @return
+	 */
+	IResult processTerm(String term, String pos);
 }
