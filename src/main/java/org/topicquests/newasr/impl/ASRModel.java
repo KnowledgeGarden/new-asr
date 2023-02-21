@@ -5,6 +5,7 @@ package org.topicquests.newasr.impl;
 
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrModel;
+import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
@@ -14,12 +15,14 @@ import org.topicquests.support.api.IResult;
  */
 public class ASRModel implements IAsrModel {
 	private ASREnvironment environment;
+	private IDictionary dictionary;
 
 	/**
 	 * 
 	 */
 	public ASRModel(ASREnvironment e) {
 		environment = e;
+		dictionary = environment.getDictionary();
 	}
 
 	///////////////////////////////
