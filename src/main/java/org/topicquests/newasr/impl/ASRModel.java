@@ -22,6 +22,16 @@ public class ASRModel implements IAsrModel {
 		environment = e;
 	}
 
+	///////////////////////////////
+	// A sentence is broken into a word array, and from there, into WordGram instances
+	// A sentence is passed to external agents to identify:
+	//		DBpedia entries --> JSON structures for hits of entities
+	//		Wikidata identifiers
+	//		Eventually - if needed
+	//			spaCy models for parse trees
+	//	Individual WordGram sequences which are found to be noun or verb phrases are replaced
+	//		with their phrase WordGram equivalent
+	////////////////////////////////
 	@Override
 	public IResult processSentence(long sentenceId, String sentence) {
 		IResult result = new ResultPojo();
