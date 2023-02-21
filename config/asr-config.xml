@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!-- new-asr properties
+	-->
+
+<properties>
+
+	
+	<parameter name="DatabaseName" value = "asrtest" />
+	<parameter name="DatabaseSchema" value = "public" />
+	
+	
+</properties>
+
