@@ -6,6 +6,7 @@ package org.topicquests.newasr;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.newasr.api.IDictionaryClient;
+import org.topicquests.newasr.bootstrap.BootstrapEngine;
 import org.topicquests.newasr.dictionary.DictionaryHttpClient;
 import org.topicquests.newasr.dictionary.DictionaryClient;
 import org.topicquests.newasr.impl.ASRModel;
@@ -21,6 +22,7 @@ public class ASREnvironment extends RootEnvironment {
 	private IDictionaryClient dictionarHttpyClient;
 	private IDictionary dictionary;
 	private IAsrModel model;
+	private BootstrapEngine booter;
 	/**
 	 * 
 	 */
@@ -32,8 +34,12 @@ public class ASREnvironment extends RootEnvironment {
 		dictionarHttpyClient = new DictionaryHttpClient(this);
 		dictionary = new DictionaryClient(this);
 		model = new ASRModel(this);
+		booter = new BootstrapEngine(this);
 	}
 	
+	public BootstrapEngine getBootstrapEngine() {
+		return booter;
+	}
 	public IDictionaryClient getDictionaryClient() {
 		return dictionarHttpyClient;
 	}
