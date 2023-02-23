@@ -160,4 +160,62 @@ public class WordGram implements IWordGram {
 		data.add(IConstants.POS_KEY, ja);
 	}
 
+	@Override
+	public void setInverseTerm(long inverseTermId) {
+		data.addProperty(IConstants.INVERSE_KEY, inverseTermId);
+	}
+
+	@Override
+	public long getInverseTerm() {
+		JsonElement jo = data.get(IConstants.INVERSE_KEY);
+		if (jo == null) return -1;
+		return jo.getAsLong();
+	}
+
+	@Override
+	public void setCannonTerm(long cannonTermId) {
+		data.addProperty(IConstants.CANNON_KEY, cannonTermId);
+	}
+
+	@Override
+	public long getCannonTerm() {
+		JsonElement jo = data.get(IConstants.CANNON_KEY);
+		if (jo == null) return -1;
+		return jo.getAsLong();
+	}
+
+	@Override
+	public void addSynonymTerm(long synonymTermId) {
+		data.addProperty(IConstants.SYNONYM_KEY, synonymTermId);
+	}
+
+	@Override
+	public JsonArray listSynonyms() {
+		JsonElement jo = data.get(IConstants.SYNONYM_KEY);
+		if (jo == null) return null;
+		return jo.getAsJsonArray();
+	}
+
+	@Override
+	public void addAntonymTerm(long antonymTermId) {
+		data.addProperty(IConstants.ANTONYM_KEY, antonymTermId);
+	}
+
+	@Override
+	public JsonArray listAntonyms() {
+		JsonElement jo = data.get(IConstants.ANTONYM_KEY);
+		if (jo == null) return null;
+		return jo.getAsJsonArray();
+	}
+
+	@Override
+	public boolean hasInverseTerm() {
+		return (this.getInverseTerm() > -1);
+	}
+
+	@Override
+	public boolean hasCannonicalTerm() {
+		return (this.getCannonTerm() > -1);
+	}
+
 }

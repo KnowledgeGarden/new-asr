@@ -26,6 +26,6 @@ public interface IConstants {
 		WORDS_KEY		= "words",	// the text for this gram
 		INVERSE_KEY		= "inverse",// inverse predicate - only for passive predicates
 		CANNON_KEY		= "cannon",	// canonical NER
-		SYNONMY_KEY		= "synon",	// synonyms
+		SYNONYM_KEY		= "synon",	// synonyms
 		ANTONYM_KEY		= "anton";	// antonyms
 }

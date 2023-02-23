@@ -53,4 +53,44 @@ public interface IWordGram extends IAddressable {
 	JsonArray listPOS();
 	
 	void addPOS(String pos);
+	
+	void setInverseTerm(long inverseTermId);
+	/**
+	 * Can return {@code -1} if no inverse termexists
+	 * @return
+	 */
+	long getInverseTerm();
+	
+	/**
+	 * Shortcut
+	 * @return
+	 */
+	boolean hasInverseTerm();
+	
+	void setCannonTerm(long cannonTermId);
+	/**
+	 * Can return {@code -1} if no cannonical term exists
+	 * @return
+	 */
+	long getCannonTerm();
+	
+	/**
+	 * Shortcut
+	 * @return
+	 */
+	boolean hasCannonicalTerm();
+	
+	void addSynonymTerm(long synonymTermId);
+	/**
+	 * Can return {@code null}
+	 * @return
+	 */
+	JsonArray listSynonyms();
+	
+	void addAntonymTerm(long antonymTermId);
+	/**
+	 * Can return {@code null}
+	 * @return
+	 */
+	JsonArray listAntonyms();
 }
