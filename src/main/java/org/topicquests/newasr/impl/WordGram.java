@@ -29,13 +29,13 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void setId(long id) {
-		data.addProperty(IConstants.ID_FIELD, new Long(id));
+		data.addProperty(IConstants.ID_KEY, new Long(id));
 
 	}
 
 	@Override
 	public long getId() {
-		return data.get(IConstants.ID_FIELD).getAsLong();
+		return data.get(IConstants.ID_KEY).getAsLong();
 	}
 
 	@Override
@@ -45,24 +45,24 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public String getWords() {
-		return data.get(IConstants.WORDS_FIELD).getAsString();
+		return data.get(IConstants.WORDS_KEY).getAsString();
 	}
 
 	@Override
 	public void setWords(String words) {
-		data.addProperty(IConstants.WORDS_FIELD, words);
+		data.addProperty(IConstants.WORDS_KEY, words);
 	}
 
 	@Override
 	public JsonArray listInLinks() {
-		JsonElement jo = data.get(IConstants.IN_FIELD);
+		JsonElement jo = data.get(IConstants.IN_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
 
 	@Override
 	public JsonArray listOutLinks() {
-		JsonElement jo = data.get(IConstants.OUT_FIELD);
+		JsonElement jo = data.get(IConstants.OUT_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -76,7 +76,7 @@ public class WordGram implements IWordGram {
 		JsonObject jo = new JsonObject();
 		jo.addProperty(Long.toString(sentenceId), gramId);
 		ja.add(jo);
-		data.add(IConstants.IN_FIELD, ja);
+		data.add(IConstants.IN_KEY, ja);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class WordGram implements IWordGram {
 		JsonObject jo = new JsonObject();
 		jo.addProperty(Long.toString(sentenceId), gramId);
 		ja.add(jo);
-		data.add(IConstants.OUT_FIELD, ja);
+		data.add(IConstants.OUT_KEY, ja);
 	}
 
 	@Override
 	public JsonArray listTopicLocators() {
-		JsonElement jo = data.get(IConstants.LOX_FIELD);
+		JsonElement jo = data.get(IConstants.LOX_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -105,12 +105,12 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(locator);
-		data.add(IConstants.LOX_FIELD, ja);
+		data.add(IConstants.LOX_KEY, ja);
 	}
 
 	@Override
 	public JsonArray listDBpedia() {
-		JsonElement jo = data.get(IConstants.DBPED_FIELD);
+		JsonElement jo = data.get(IConstants.DBPED_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -122,13 +122,13 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(dbPediaJson);
-		data.add(IConstants.DBPED_FIELD, ja);
+		data.add(IConstants.DBPED_KEY, ja);
 
 	}
 
 	@Override
 	public JsonArray listWikidata() {
-		JsonElement jo = data.get(IConstants.WIKID_FIELD);
+		JsonElement jo = data.get(IConstants.WIKID_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -140,12 +140,12 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(wikidataId);
-		data.add(IConstants.WIKID_FIELD, ja);
+		data.add(IConstants.WIKID_KEY, ja);
 	}
 
 	@Override
 	public JsonArray listPOS() {
-		JsonElement jo = data.get(IConstants.POS_FIELD);
+		JsonElement jo = data.get(IConstants.POS_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -157,7 +157,7 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(pos);
-		data.add(IConstants.POS_FIELD, ja);
+		data.add(IConstants.POS_KEY, ja);
 	}
 
 }

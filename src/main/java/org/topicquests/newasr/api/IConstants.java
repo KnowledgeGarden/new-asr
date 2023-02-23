@@ -16,6 +16,7 @@ public interface IConstants {
 	
 	// standard keys
 	public static final String
+		ID_KEY			= "id",
 		LOX_KEY			= "lox", 	// locators
 		IN_KEY			= "inLinks", // {sentenceId, gramId}
 		OUT_KEY			= "outLinks", // {sentenceId, gramId}
