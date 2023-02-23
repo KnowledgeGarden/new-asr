@@ -22,7 +22,7 @@ public interface IAsrModel {
 	/**
 	 * Create an {@link IWordGram} from {@code term} -used for bootstrapping
 	 * @param term
-	 * @param pos
+	 * @param pos can be {@code null}
 	 * @return
 	 */
 	IResult processTerm(String term, String pos);

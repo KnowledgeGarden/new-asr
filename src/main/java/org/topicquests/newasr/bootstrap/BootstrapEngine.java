@@ -9,6 +9,7 @@ import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
+import org.topicquests.support.util.TextFileHandler;
 
 /**
  * @author jackpark
@@ -17,6 +18,7 @@ import org.topicquests.support.api.IResult;
 public class BootstrapEngine {
 	private ASREnvironment environment;
 	private IAsrModel model;
+	
 
 	/**
 	 * 
@@ -32,9 +34,14 @@ public class BootstrapEngine {
 	 * @param pos  can be {@code null}
 	 * @return
 	 */
-	IResult importTermListFile(File inFile, String pos) {
+	public IResult importTermListFile(File inFile, String pos) {
 		IResult result = new ResultPojo();
-
+		TextFileHandler h = new TextFileHandler();
+		String line = h.readFirstLine(inFile);
+		while (line != null) {
+			model.processTerm(line.trim(), pos);
+			line = h.readNextLine();
+		}
 		return result;
 	}
 }
