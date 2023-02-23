@@ -35,6 +35,7 @@ public class BootstrapEngine {
 	 * @return
 	 */
 	public IResult importTermListFile(File inFile, String pos) {
+		System.out.println("Importing "+inFile+" "+pos);
 		IResult result = new ResultPojo();
 		TextFileHandler h = new TextFileHandler();
 		String line = h.readFirstLine(inFile);

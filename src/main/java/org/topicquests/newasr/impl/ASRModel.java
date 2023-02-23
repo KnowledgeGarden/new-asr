@@ -48,6 +48,7 @@ public class ASRModel implements IAsrModel {
 	///////////////////////////////
 	@Override
 	public IResult processTerm(String term, String pos) {
+		System.out.println("ModelProcessingTerm "+term+" | "+pos);
 		IResult result = new ResultPojo();
 		// TODO Auto-generated method stub
 		return result;
