@@ -3,6 +3,7 @@
  */
 package org.topicquests.newasr;
 
+import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.newasr.api.IDictionaryClient;
@@ -10,6 +11,7 @@ import org.topicquests.newasr.bootstrap.BootstrapEngine;
 import org.topicquests.newasr.dictionary.DictionaryHttpClient;
 import org.topicquests.newasr.dictionary.DictionaryClient;
 import org.topicquests.newasr.impl.ASRModel;
+import org.topicquests.newasr.impl.PostgresWordGramGraphProvider;
 import org.topicquests.pg.PostgresConnectionFactory;
 import org.topicquests.support.RootEnvironment;
 
@@ -23,6 +25,7 @@ public class ASREnvironment extends RootEnvironment {
 	private IDictionary dictionary;
 	private IAsrModel model;
 	private BootstrapEngine booter;
+	private IAsrDataProvider database;
 	/**
 	 * 
 	 */
@@ -33,10 +36,14 @@ public class ASREnvironment extends RootEnvironment {
 		dbDriver = new PostgresConnectionFactory(dbName, schemaName);
 		dictionarHttpyClient = new DictionaryHttpClient(this);
 		dictionary = new DictionaryClient(this);
+		database = new PostgresWordGramGraphProvider(this);
 		model = new ASRModel(this);
 		booter = new BootstrapEngine(this);
 	}
 	
+	public IAsrDataProvider getDatabase() {
+		return database;
+	}
 	public BootstrapEngine getBootstrapEngine() {
 		return booter;
 	}

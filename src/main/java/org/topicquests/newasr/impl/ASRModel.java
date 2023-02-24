@@ -4,6 +4,7 @@
 package org.topicquests.newasr.impl;
 
 import org.topicquests.newasr.ASREnvironment;
+import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.support.ResultPojo;
@@ -16,6 +17,7 @@ import org.topicquests.support.api.IResult;
 public class ASRModel implements IAsrModel {
 	private ASREnvironment environment;
 	private IDictionary dictionary;
+	private IAsrDataProvider database;
 
 	/**
 	 * 
@@ -23,6 +25,7 @@ public class ASRModel implements IAsrModel {
 	public ASRModel(ASREnvironment e) {
 		environment = e;
 		dictionary = environment.getDictionary();
+		database = environment.getDatabase();
 	}
 
 	///////////////////////////////
