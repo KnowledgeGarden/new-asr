@@ -32,7 +32,8 @@ public interface IAsrDataProvider {
 	IResult addNodeProperty(long id, String key, String value);
 	
 	/**
-	 * Insert a collection of key/value pairs against a single nodeID
+	 * <p>Insert a collection of key/value pairs against a single nodeID</p>
+	 * <p>Used for bootstrapping a new term and its POV</p>
 	 * @param id
 	 * @param keysVals
 	 * @return
