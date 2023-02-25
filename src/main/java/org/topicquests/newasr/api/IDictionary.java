@@ -26,10 +26,12 @@ public interface IDictionary {
 		
 	/**
 	 * Can return <code>null</code> if word doesn't exist
-	 * @param word
+	 * @param term
 	 * @return
 	 */
-	String getTermId(String word);
+	String getTermId(String term);
+	
+	long getTermIdAsLong(String term);
 	
 	/**
 	 * Quick test; returns <code>true</code> if nothing in the dictionary
@@ -40,10 +42,10 @@ public interface IDictionary {
 	/**
 	 * If word does not exist, it will be added with a new Id;
 	 * Otherwise, the word's existing Id will be returned
-	 * @param word
+	 * @param term
 	 * @return
 	 */
-	IResult addTerm(String word);
+	IResult addTerm(String term);
 		
 	JsonObject getDictionary();
 	

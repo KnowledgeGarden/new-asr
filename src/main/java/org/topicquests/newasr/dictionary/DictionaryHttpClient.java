@@ -72,15 +72,15 @@ public class DictionaryHttpClient implements IDictionaryClient {
 	}
 	
 	@Override
-	public IResult addWord(String word) {
+	public IResult addTerm(String term) {
 		IResult result = new ResultPojo();
 		//build query
 		StringBuilder buf = new StringBuilder("{");
 		buf.append("\"verb\":\"addWord\","); // the verb
-		buf.append("\"word\":\""+word+"\","); // the field
+		buf.append("\"word\":\""+term+"\","); // the field
 		buf.append("\"clientId\":\""+CLIENT_ID+"\"}");
 		String query = buf.toString();
-		environment.logDebug("DictionaryHttpClient.addWord "+word+"\n"+query);
+		environment.logDebug("DictionaryHttpClient.addWord "+term+"\n"+query);
 		try {
 			getQuery(query, result);
 		} catch (Exception e) {

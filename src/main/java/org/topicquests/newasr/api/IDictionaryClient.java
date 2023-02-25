@@ -30,8 +30,8 @@ public interface IDictionaryClient {
 	 * {"cargo":"998492","isNewWord":true}<br/>
 	 * where <code>isNewWord</code> will reflect whether the word is new or not</p>
 	 * 
-	 * @param word
+	 * @param term
 	 * @return
 	 */
-	IResult addWord(String word);
+	IResult addTerm(String term);
 }

@@ -6,9 +6,14 @@ package org.topicquests.newasr.dictionary;
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.newasr.api.IDictionaryClient;
+import org.topicquests.newasr.util.JsonUtil;
+import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
 import com.google.gson.JsonObject;
+
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 /**
  * @author jackpark
@@ -17,42 +22,124 @@ import com.google.gson.JsonObject;
 public class DictionaryClient implements IDictionary {
 	private ASREnvironment environment;
 	private IDictionaryClient dictionaryClient;
+	private JsonUtil util;
+	/* in memory dictionary for speed */
+	private JsonObject dictionary;
+	// from DictionaryServer
+	private static final String
+		VERB			= "verb",
+		CLIENT_ID		= "clientId",
+		TERM			= "term",
+		GET_TERM		= "getWord",
+		IS_NEW_TERM		= "isNewTerm",	// boolean <code>true</code> if is new word
+		TEST			= "test",
+		ERROR			= "error",
+		CARGO			= "cargo"; //return object - wordId or word
+	// local
+	private static final String
+		TERMS			= "terms", 	// key= term/lowercase, val=id
+		IDS				= "ids";	// key = id, val = term in any case
 	/**
 	 * 
 	 */
 	public DictionaryClient(ASREnvironment e) {
 		environment = e;
 		dictionaryClient = environment.getDictionaryClient();
+		util = new JsonUtil();
+		// initialize the dictionary
+		dictionary = new JsonObject();
+		dictionary.add(TERMS, new JsonObject());
+		dictionary.add(IDS, new JsonObject());
 	}
 
 	@Override
 	public String getTerm(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized(dictionary) {
+			JsonObject words = _getTerms();
+			return words.get(id).getAsString();
+		}
 	}
-
+	JsonObject _getTerms() {
+		return dictionary.get(TERMS).getAsJsonObject();
+	}
+	
+	JsonObject getIDs() {
+		return dictionary.get(IDS).getAsJsonObject();
+	}
 	@Override
-	public String getTermId(String word) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getTermId(String term) {
+		synchronized(dictionary) {
+			JsonObject ids = getIDs();
+			//System.out.println("CD.getWordIds "+ids+" "+word);
+			String lc = term.toLowerCase();
+			return ids.get(lc).getAsString();
+		}	
 	}
 
+	public long getTermIdAsLong(String term) {
+		synchronized(dictionary) {
+			JsonObject ids = getIDs();
+			//System.out.println("CD.getWordIds "+ids+" "+word);
+			String lc = term.toLowerCase();
+			return ids.get(lc).getAsLong();
+		}
+	}
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		synchronized(dictionary) {
+			JsonObject obj = this._getTerms();
+			if (obj == null)
+				return false;
+			return obj.size() > 0;
+		}
 	}
 
 	@Override
-	public IResult addTerm(String word) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public IResult addTerm(String term) {
+		String theTerm = term.toLowerCase();
+		IResult result = new ResultPojo();
+		result.setResultObject("0"); //default
+		result.setResultObjectA(new Boolean(true)); // default is new word
+		environment.logDebug("Dictionary.addTerm "+term);
+		//if (theWord.equals("\""))
+		//	return result; // default id for a quote character
+		//Will get the word even if lower case
+		String id = getTermId(term);
+		environment.logDebug("Dictionary.addTerm-1 "+id);
+		if (id == null) {
+			IResult r = dictionaryClient.addTerm(term);
+			environment.logDebug("Dictionary.addTerm-2 "+r.getErrorString()+" | "+r.getResultObject());
+			JsonObject jo = null;
+			String json = (String)r.getResultObject();
+			//TODO null check
+			try {
+				jo = util.parse(json);
+			} catch (Exception e) {
+				environment.logError(e.getMessage(), e);
+				e.printStackTrace();
+			}
+			boolean isNew = jo.get(IS_NEW_TERM).getAsBoolean();
+			environment.logDebug("Dictionary.addWord-3 "+isNew);
+			//if (isNew)
+			//	statisticsClient.addToKey(IASRFields.WORDS_NEW);
+			//else
+			//	result.setResultObjectA(new Boolean(false));
+			result.setResultObjectA(new Boolean(isNew));
+			id = jo.get(CARGO).getAsString();
+			environment.logDebug("Dictionary.addWord-4 "+id);
+			result.setResultObject(id);
+			synchronized(dictionary) {
+				_getTerms().addProperty(id, term);
+				getIDs().addProperty(theTerm, id);
+			}
+		} else
+			result.setResultObject(id);
+		environment.logDebug("Dictionary.addWord-5 "+id);
+		return result;	}
 
 	@Override
 	public JsonObject getDictionary() {
-		// TODO Auto-generated method stub
-		return null;
+		return dictionary;
 	}
 
 }
