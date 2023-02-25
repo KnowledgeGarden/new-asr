@@ -12,9 +12,6 @@ import org.topicquests.support.api.IResult;
 
 import com.google.gson.JsonObject;
 
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-
 /**
  * @author jackpark
  *
@@ -27,20 +24,20 @@ public class DictionaryClient implements IDictionary {
 	private JsonObject dictionary;
 	// from DictionaryServer
 	private static final String
-		VERB			= "verb",
-		CLIENT_ID		= "clientId",
-		TERM			= "term",
-		GET_TERM		= "getWord",
+//		VERB			= "verb",
+//		CLIENT_ID		= "clientId",
+//		TERM			= "term",
+//		GET_TERM		= "getWord",
 		IS_NEW_TERM		= "isNewTerm",	// boolean <code>true</code> if is new word
-		TEST			= "test",
-		ERROR			= "error",
+//		TEST			= "test",
+//		ERROR			= "error",
 		CARGO			= "cargo"; //return object - wordId or word
 	// local
 	private static final String
 		TERMS			= "terms", 	// key= term/lowercase, val=id
 		IDS				= "ids";	// key = id, val = term in any case
 	/**
-	 * 
+	 * @param e
 	 */
 	public DictionaryClient(ASREnvironment e) {
 		environment = e;
@@ -59,6 +56,7 @@ public class DictionaryClient implements IDictionary {
 			return words.get(id).getAsString();
 		}
 	}
+	
 	JsonObject _getTerms() {
 		return dictionary.get(TERMS).getAsJsonObject();
 	}
@@ -66,6 +64,7 @@ public class DictionaryClient implements IDictionary {
 	JsonObject getIDs() {
 		return dictionary.get(IDS).getAsJsonObject();
 	}
+	
 	@Override
 	public String getTermId(String term) {
 		synchronized(dictionary) {
@@ -84,6 +83,7 @@ public class DictionaryClient implements IDictionary {
 			return ids.get(lc).getAsLong();
 		}
 	}
+	
 	@Override
 	public boolean isEmpty() {
 		synchronized(dictionary) {
