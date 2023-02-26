@@ -12,6 +12,7 @@ import org.topicquests.newasr.util.JsonUtil;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -111,7 +112,9 @@ public class DictionaryClient implements IDictionary {
 			JsonObject ids = getIDs();
 			//System.out.println("CD.getWordIds "+ids+" "+word);
 			String lc = term.toLowerCase();
-			return ids.get(lc).getAsString();
+			JsonElement x = ids.get(lc);
+			if (x == null) return null;
+			return x.getAsString();
 		}	
 	}
 

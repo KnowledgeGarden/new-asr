@@ -3,12 +3,18 @@
  */
 package org.topicquests.newasr.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IAsrModel;
+import org.topicquests.newasr.api.IConstants;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
+
+import com.google.gson.JsonObject;
 
 /**
  * @author jackpark
@@ -53,14 +59,35 @@ public class ASRModel implements IAsrModel {
 	public IResult processTerm(String term, String pos) {
 		System.out.println("ModelProcessingTerm "+term+" | "+pos);
 		IResult result = new ResultPojo();
-		// TODO Auto-generated method stub
+		
+		boolean exists =termExists(term);
+		IResult r = dictionary.addTerm(term);
+		String id = (String)r.getResultObject();
+		result.setResultObject(id);
+		long idl = new Long(id).longValue();
+		if (!exists) {
+			r = getTermById(id);
+			if (r.getResultObject() == null) {
+				JsonObject jo = new JsonObject();
+				jo.addProperty(IConstants.WORDS_KEY, term);
+				if (pos != null)
+					jo.addProperty(IConstants.POS_KEY, pos);
+
+				r = database.addNodeProperties(idl, jo);
+				if (r.hasError())
+					result.addErrorString(r.getErrorString());
+			}
+		}
 		return result;
 	}
 
 	@Override
 	public IResult getTermById(String id) {
-		IResult result = new ResultPojo();
-		// TODO Auto-generated method stub
+		IResult result = database.getNode(new Long(id).longValue());
 		return result;		
+	}
+	
+	boolean termExists(String term) {
+		return dictionary.getTermId(term) != null;
 	}
 }

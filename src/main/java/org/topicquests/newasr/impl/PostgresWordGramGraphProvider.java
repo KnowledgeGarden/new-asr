@@ -3,7 +3,6 @@
  */
 package org.topicquests.newasr.impl;
 
-import java.util.List;
 import java.util.Iterator;
 
 import org.topicquests.newasr.ASREnvironment;
@@ -108,7 +107,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	}
 
 	@Override
-	public IResult addNodeProperties(long id, List<JsonObject> keysVals) {
+	public IResult addNodeProperties(long id, JsonObject keysVals) {
 		IResult result = new ResultPojo();
 		// TODO Auto-generated method stub
 		return result;

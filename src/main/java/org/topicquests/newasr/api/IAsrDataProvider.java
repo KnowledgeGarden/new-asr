@@ -3,8 +3,6 @@
  */
 package org.topicquests.newasr.api;
 
-import java.util.List;
-
 import org.topicquests.support.api.IResult;
 
 import com.google.gson.JsonObject;
@@ -38,7 +36,7 @@ public interface IAsrDataProvider {
 	 * @param keysVals
 	 * @return
 	 */
-	IResult addNodeProperties(long id, List<JsonObject> keysVals);
+	IResult addNodeProperties(long id, JsonObject keysVals);
 	
 	IResult removeNodeProperty(long id, String key, String value);
 	
