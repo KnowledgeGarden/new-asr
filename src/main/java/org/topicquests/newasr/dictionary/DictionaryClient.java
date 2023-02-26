@@ -47,8 +47,6 @@ public class DictionaryClient implements IDictionary {
 		util = new JsonUtil();
 		// initialize the dictionary
 		dictionary = new JsonObject();
-		dictionary.add(TERMS, new JsonObject());
-		dictionary.add(IDS, new JsonObject());
 		IResult r = dictionaryClient.getDictionary();
 		environment.logError("AAA "+r.getErrorString(), null);
 		//environment.logError("BBB "+r.getResultObject(), null);
@@ -60,21 +58,30 @@ public class DictionaryClient implements IDictionary {
 		if (dict == null)
 			throw new RuntimeException("Missing Dictionary");
 		try {
+			JsonObject idx = new JsonObject();
+			JsonObject tdx = new JsonObject();
+			dictionary.add(TERMS, tdx);
+			dictionary.add(IDS, idx);
 			JsonObject jx = util.parse(dict);
+			String jjj = jx.get(CARGO).getAsString();
+			System.out.println("BA: "+jjj);
+
+			jx = util.parse(jjj);
+			System.out.println("BD: "+jx);
 			Iterator<String>itr = jx.keySet().iterator();
 			String id;
 			String foo;
 			String [] them;
-			JsonObject x;
 			while (itr.hasNext()) {
 				id = itr.next();
 				foo = jx.get(id).getAsString();
 				//foo := word|lowercaseword
-				them = foo.split("|");
-				x = this.getIDs();
-				x.addProperty(id, them[0]);
-				x = this._getTerms();
-				x.addProperty(them[1], id);
+				them = foo.split(":");
+				if (them.length > 0) {
+				//System.out.println("BOOT: "+id+" "+them[0]+""+them[1]);
+					idx.addProperty(id, them[0]);
+					tdx.addProperty(them[1], id);
+				}
 			}
 		} catch (Exception e) {
 			environment.logError(e.getMessage(), e);
