@@ -12,6 +12,7 @@ import org.topicquests.newasr.dictionary.DictionaryHttpClient;
 import org.topicquests.newasr.dictionary.DictionaryClient;
 import org.topicquests.newasr.impl.ASRModel;
 import org.topicquests.newasr.impl.PostgresWordGramGraphProvider;
+import org.topicquests.newasr.wg.WordGramUtil;
 import org.topicquests.pg.PostgresConnectionFactory;
 import org.topicquests.support.RootEnvironment;
 
@@ -26,6 +27,7 @@ public class ASREnvironment extends RootEnvironment {
 	private IAsrModel model;
 	private BootstrapEngine booter;
 	private IAsrDataProvider database;
+	private WordGramUtil wgUtil;
 	/**
 	 * 
 	 */
@@ -38,6 +40,8 @@ public class ASREnvironment extends RootEnvironment {
 		dictionary = new DictionaryClient(this);
 		database = new PostgresWordGramGraphProvider(this);
 		model = new ASRModel(this);
+		wgUtil = new WordGramUtil(this);
+		// firing up WordGramUtil bootstraps punctuation wordgram if not already there
 		booter = new BootstrapEngine(this);
 	}
 	

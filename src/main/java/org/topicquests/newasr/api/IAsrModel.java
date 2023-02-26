@@ -20,10 +20,10 @@ public interface IAsrModel {
 	IResult processSentence(long sentenceId, String sentence);
 	
 	/**
-	 * Create an {@link IWordGram} from {@code term} -used for bootstrapping
+	 * Create an {@link IWordGram} from {@code term} -used for bootstrapping and elsewhere
 	 * @param term
 	 * @param pos can be {@code null}
-	 * @return
+	 * @return returns term's ID as String
 	 */
 	IResult processTerm(String term, String pos);
 }
