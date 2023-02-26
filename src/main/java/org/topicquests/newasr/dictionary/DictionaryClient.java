@@ -3,6 +3,8 @@
  */
 package org.topicquests.newasr.dictionary;
 
+import java.util.Iterator;
+
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.newasr.api.IDictionaryClient;
@@ -33,7 +35,7 @@ public class DictionaryClient implements IDictionary {
 //		ERROR			= "error",
 		CARGO			= "cargo"; //return object - wordId or word
 	// local
-	private static final String
+	public static final String
 		TERMS			= "terms", 	// key= term/lowercase, val=id
 		IDS				= "ids";	// key = id, val = term in any case
 	/**
@@ -47,8 +49,39 @@ public class DictionaryClient implements IDictionary {
 		dictionary = new JsonObject();
 		dictionary.add(TERMS, new JsonObject());
 		dictionary.add(IDS, new JsonObject());
+		IResult r = dictionaryClient.getDictionary();
+		environment.logError("AAA "+r.getErrorString(), null);
+		//environment.logError("BBB "+r.getResultObject(), null);
+		//{"cargo":"{\"36407\":\"minuets|minuets\",\"36408\":\"minuses|minuses\"
+		buildDicctionary((String)r.getResultObject());
 	}
 
+	void buildDicctionary(String dict) {
+		if (dict == null)
+			throw new RuntimeException("Missing Dictionary");
+		try {
+			JsonObject jx = util.parse(dict);
+			Iterator<String>itr = jx.keySet().iterator();
+			String id;
+			String foo;
+			String [] them;
+			JsonObject x;
+			while (itr.hasNext()) {
+				id = itr.next();
+				foo = jx.get(id).getAsString();
+				//foo := word|lowercaseword
+				them = foo.split("|");
+				x = this.getIDs();
+				x.addProperty(id, them[0]);
+				x = this._getTerms();
+				x.addProperty(them[1], id);
+			}
+		} catch (Exception e) {
+			environment.logError(e.getMessage(), e);
+			throw new RuntimeException(e); //game over
+		}
+		environment.logError("LOADED "+this.getIDs().size(), null);
+	}
 	@Override
 	public String getTerm(String id) {
 		synchronized(dictionary) {

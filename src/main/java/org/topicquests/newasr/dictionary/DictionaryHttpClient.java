@@ -60,6 +60,7 @@ public class DictionaryHttpClient implements IDictionaryClient {
 		buf.append("\"verb\":\"getDictionary\","); // the verb
 		buf.append("\"clientId\":\""+CLIENT_ID+"\"}");
 		String query = buf.toString();
+		environment.logError("SENDING "+query, null);
 		try {
 			query = URLEncoder.encode(query, "UTF-8");
 			getQuery(SERVER_URL+query, result);

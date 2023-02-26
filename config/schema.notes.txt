@@ -1,5 +1,5 @@
 psql postgres -- to boot psql
-create database hntest owner tq_admin;
+create database asrtest owner tq_admin;
 requires tq_admin with a password
 to install
-psql hntest -f hn-schema.sql
+psql asrtest -f asr-schema.sql
