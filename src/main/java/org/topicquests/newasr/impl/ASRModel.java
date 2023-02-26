@@ -57,4 +57,10 @@ public class ASRModel implements IAsrModel {
 		return result;
 	}
 
+	@Override
+	public IResult getTermById(String id) {
+		IResult result = new ResultPojo();
+		// TODO Auto-generated method stub
+		return result;		
+	}
 }
