@@ -3,14 +3,14 @@
  */
 package org.topicquests.newasr.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IConstants;
 import org.topicquests.newasr.api.IDictionary;
+import org.topicquests.newasr.api.IWordGram;
+import org.topicquests.newasr.wg.WordGramCache;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
@@ -24,6 +24,8 @@ public class ASRModel implements IAsrModel {
 	private ASREnvironment environment;
 	private IDictionary dictionary;
 	private IAsrDataProvider database;
+	private WordGramCache cache;
+	private final int CACHE_SIZE = 8192;
 
 	/**
 	 * 
@@ -32,6 +34,7 @@ public class ASRModel implements IAsrModel {
 		environment = e;
 		dictionary = environment.getDictionary();
 		database = environment.getDatabase();
+		cache = new WordGramCache(environment, this, CACHE_SIZE);
 	}
 
 	///////////////////////////////
@@ -59,7 +62,6 @@ public class ASRModel implements IAsrModel {
 	public IResult processTerm(String term, String pos) {
 		System.out.println("ModelProcessingTerm "+term+" | "+pos);
 		IResult result = new ResultPojo();
-		
 		boolean exists =termExists(term);
 		IResult r = dictionary.addTerm(term);
 		String id = (String)r.getResultObject();
@@ -83,7 +85,17 @@ public class ASRModel implements IAsrModel {
 
 	@Override
 	public IResult getTermById(String id) {
-		IResult result = database.getNode(new Long(id).longValue());
+		IResult result = null;
+		IWordGram wg = cache.get(id);
+		if (wg == null) {
+			result = database.getNode(new Long(id).longValue());
+			wg = (IWordGram)result.getResultObject();
+			if (wg != null)
+				cache.add(id,wg);
+		} else {
+			result = new ResultPojo();
+			result.setResultObject(wg);
+		}
 		return result;		
 	}
 	

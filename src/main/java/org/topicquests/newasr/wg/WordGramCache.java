@@ -42,9 +42,9 @@ public class WordGramCache {
 	 * @param env
 	 * @param maxSize
 	 */
-	public WordGramCache(ASREnvironment env, int maxSize) {
+	public WordGramCache(ASREnvironment env, IAsrModel m, int maxSize) {
 		environment = env;
-		model = environment.getModel();
+		model = m;
 		MAX_SIZE = maxSize;
 	    cache = new LinkedHashMap<String,IWordGram>(maxSize+1, .75F, true) {
 	    	private static final long serialVersionUID = 1;

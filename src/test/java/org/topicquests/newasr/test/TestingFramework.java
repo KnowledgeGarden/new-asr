@@ -13,8 +13,9 @@ public class TestingFramework {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new BootTest();
+		//new BootTest();
 		//new BootstrapTest();
+		new FirstNodeTest();
 	}
 
 }

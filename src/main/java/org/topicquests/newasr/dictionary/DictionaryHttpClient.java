@@ -34,9 +34,9 @@ public class DictionaryHttpClient implements IDictionaryClient {
 		// from IDictionaryServerModel
 		VERB			= "verb",
 		WORD			= "word",
-		GET_WORD_ID		= "getWordId",
-		ADD_WORD		= "addWord",
-		GET_WORD		= "getWord",
+		GET_TERM_ID		= "getTermId",
+		ADD_TERM		= "addTerm",
+		//GET_WORD		= "getWord",
 		GET_DICTIONARY	= "getDictionary",
 		IS_NEW_WORD		= "isNewWord",	// boolean <code>true</code> if is new word
 		TEST			= "test",

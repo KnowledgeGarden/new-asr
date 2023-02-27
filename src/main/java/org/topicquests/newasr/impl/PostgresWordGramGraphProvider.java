@@ -3,11 +3,14 @@
  */
 package org.topicquests.newasr.impl;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.Iterator;
 
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IConstants;
+import org.topicquests.newasr.api.IQueries;
 import org.topicquests.newasr.api.IWordGram;
 import org.topicquests.pg.PostgresConnectionFactory;
 import org.topicquests.pg.api.IPostgresConnection;
@@ -15,6 +18,7 @@ import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -66,7 +70,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    	  } else if (key.equals(IConstants.CANNON_KEY)) {
 	    		  putLongProperty(objectId, IConstants.CANNON_KEY, node.getCannonTerm(), conn, result);
 	    	  } else if (key.equals(IConstants.SYNONYM_KEY)) {
-    		  putStringArray(objectId, IConstants.SYNONYM_KEY, node.listSynonyms(), conn, result);
+	    		  putStringArray(objectId, IConstants.SYNONYM_KEY, node.listSynonyms(), conn, result);
 	    	  } else if (key.equals(IConstants.ANTONYM_KEY)) {
 	    		  putStringArray(objectId, IConstants.ANTONYM_KEY, node.listAntonyms(), conn, result);
 	    	  }	    	  
@@ -80,25 +84,98 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	}
 	private void putLongProperty(long id, String key, long value, IPostgresConnection conn, IResult r) {
 		if (value == -1) return;
-		//TODO
+		String sql = IQueries.PUT_PROPERTY;
+		Object [] obj = new Object[3];
+		//(id, _key, _val)
+		obj[0] = Long.valueOf(id).toString();
+		obj[1] = key;
+		obj[2] = Long.valueOf(value).toString();
+		IResult rx = conn.executeSQL(sql, obj);
+		if (rx.hasError())
+			r.addErrorString(rx.getErrorString());
 	}
 
 	private void putProperty(long id, String key, String value, IPostgresConnection conn, IResult r) {
 		if (value == null) return;
-		//TODO
+		String sql = IQueries.PUT_PROPERTY;
+		Object [] obj = new Object[3];
+		//(id, _key, _val)
+		obj[0] = Long.valueOf(id).toString();
+		obj[1] = key;
+		obj[2] = value;
+		IResult rx = conn.executeSQL(sql, obj);
+		if (rx.hasError())
+			r.addErrorString(rx.getErrorString());
 	}
 	private void putStringArray(long id, String key, JsonArray vals, IPostgresConnection conn, IResult r) {
 		if (vals == null) return;
-		
+		String sql = IQueries.PUT_PROPERTY;
+		Object [] obj = new Object[3];
+		//(id, _key, _val)
+		obj[0] = Long.valueOf(id).toString();
+		obj[1] = key;
+		IResult rx;
+		Iterator<JsonElement> itr = vals.iterator();
+		JsonElement je;
+		while  (itr.hasNext()) {
+			je = itr.next();
+			if (je != null) {
+				obj[2] = je.getAsString();
+				rx = conn.executeSQL(sql, obj);
+				if (rx.hasError())
+					r.addErrorString(rx.getErrorString());
+			}
+		}
 	}
 	
 	@Override
 	public IResult getNode(long nodeId) {
 		IResult result = new ResultPojo();
-		// TODO Auto-generated method stub
+		String sql = IQueries.GET_NODE;
+	    IPostgresConnection conn = null;
+		Object obj = Long.valueOf(nodeId).toString();
+		try {
+			conn = dbDriver.getConnection();
+			IResult r = conn.executeSelect(sql, obj);
+		    ResultSet rs = (ResultSet)r.getResultObject();
+		    if (r.hasError())
+		    	result.addErrorString(r.getErrorString());
+		    if (rs != null) {
+			    String key, value;	  
+		    	JsonObject jo = new JsonObject();
+		    	while (rs.next()) {
+		    		key = rs.getString("_key");
+		    		value = rs.getString("_val");
+		    		loadNode(jo, key, value);
+		    	}
+		    	result.setResultObject(jo);
+		    }
+	    } catch (Exception e) {
+	    	result.addErrorString("GetNode "+e.getMessage());
+	    	environment.logError(e.getMessage(), e);
+	    }
 		return result;
 	}
 
+	void loadNode(JsonObject node, String key, String value) {
+		JsonElement je = node.get(key);
+		JsonArray ja;
+		if (je == null)
+			node.addProperty(key, value);
+		else {
+			if (je.isJsonArray()) {
+				ja = je.getAsJsonArray();
+				ja.add(value);
+			} else {
+				ja = new JsonArray();
+				ja.add(je);
+				ja.add(value);
+				node.add(key, ja);
+			}
+		}
+	}
+	
+	
 	@Override
 	public IResult addNodeProperty(long id, String key, String value) {
 		IResult result = new ResultPojo();
