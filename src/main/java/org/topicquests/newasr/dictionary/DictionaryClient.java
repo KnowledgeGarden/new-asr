@@ -157,11 +157,15 @@ public class DictionaryClient implements IDictionary {
 			//TODO null check
 			try {
 				jo = util.parse(json);
+				System.out.println("DictAddTermX "+term+" | "+json);
 			} catch (Exception e) {
 				environment.logError(e.getMessage(), e);
 				e.printStackTrace();
 			}
-			boolean isNew = jo.get(IS_NEW_TERM).getAsBoolean();
+			JsonElement je = jo.get(IS_NEW_TERM);
+			boolean isNew = false;
+			if (je != null)
+				isNew = je.getAsBoolean();
 			environment.logDebug("Dictionary.addWord-3 "+isNew);
 			//if (isNew)
 			//	statisticsClient.addToKey(IASRFields.WORDS_NEW);

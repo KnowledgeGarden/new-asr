@@ -298,6 +298,7 @@ public class WordGramUtil {
 	 * @return
 	 */
 	String getPunctuationId(String punct, String lexType) {
+		System.out.println("ProcesPunct: "+punct);
 		IResult r = model.processTerm(punct, lexType);
 		return (String)r.getResultObject();
 	}

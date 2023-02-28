@@ -34,4 +34,11 @@ public interface IAsrModel {
 	 * @return
 	 */
 	IResult getTermById(String id);
+	
+	/**
+	 * Same as $getTermById but does not check cache
+	 * @param id
+	 * @return
+	 */
+	IResult getThisTermById(String id);
 }

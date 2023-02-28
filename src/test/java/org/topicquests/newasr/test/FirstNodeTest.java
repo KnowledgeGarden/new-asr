@@ -13,7 +13,7 @@ import org.topicquests.support.api.IResult;
  */
 public class FirstNodeTest extends TestingRoot {
 	public static final String
-		TERM	= "Foo Bar",
+		TERM	= "Fool Bar",
 		POS		= "noun";
 	/**
 	 * 

@@ -98,7 +98,7 @@ public class WordGramCache {
 		synchronized(cache) {
 			IWordGram result = cache.get(key);
 			if (result == null) {
-				IResult r = model.getTermById(key);
+				IResult r = model.getThisTermById(key);
 				result = (IWordGram)r.getResultObject();
 				if (result != null) {
 					environment.logDebug("WordGramCache.get "+key+" "+result);

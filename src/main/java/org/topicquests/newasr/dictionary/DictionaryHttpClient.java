@@ -77,8 +77,8 @@ public class DictionaryHttpClient implements IDictionaryClient {
 		IResult result = new ResultPojo();
 		//build query
 		StringBuilder buf = new StringBuilder("{");
-		buf.append("\"verb\":\"addWord\","); // the verb
-		buf.append("\"word\":\""+term+"\","); // the field
+		buf.append("\"verb\":\"addTerm\","); // the verb
+		buf.append("\"term\":\""+term+"\","); // the field
 		buf.append("\"clientId\":\""+CLIENT_ID+"\"}");
 		String query = buf.toString();
 		environment.logDebug("DictionaryHttpClient.addWord "+term+"\n"+query);

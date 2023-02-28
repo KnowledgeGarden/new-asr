@@ -78,8 +78,9 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    } catch (Exception e) {
 	      result.addErrorString("PDD-4 "+objectId+" "+e.getMessage());
 	      environment.logError("PDD-5 "+objectId+" "+result.getErrorString(), null);
+	    } finally {
+	    	conn.closeConnection(result);
 	    }
-	    conn.closeConnection(result);
 		return result;
 	}
 	private void putLongProperty(long id, String key, long value, IPostgresConnection conn, IResult r) {
@@ -130,6 +131,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	
 	@Override
 	public IResult getNode(long nodeId) {
+		System.out.println("PGgetNode "+nodeId);
 		IResult result = new ResultPojo();
 		String sql = IQueries.GET_NODE;
 	    IPostgresConnection conn = null;
@@ -153,6 +155,8 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    } catch (Exception e) {
 	    	result.addErrorString("GetNode "+e.getMessage());
 	    	environment.logError(e.getMessage(), e);
+	    } finally {
+	    	conn.closeConnection(result);
 	    }
 		return result;
 	}

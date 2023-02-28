@@ -99,6 +99,15 @@ public class ASRModel implements IAsrModel {
 		return result;		
 	}
 	
+	@Override
+	public IResult getThisTermById(String id) {
+		System.out.println("ASRGetThis "+id);
+		IResult result = database.getNode(new Long(id).longValue());
+		IWordGram wg = (IWordGram)result.getResultObject();
+		if (wg != null)
+			cache.add(id,wg);
+		return result;
+	}
 	boolean termExists(String term) {
 		return dictionary.getTermId(term) != null;
 	}
