@@ -132,10 +132,11 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	@Override
 	public IResult getNode(long nodeId) {
 		System.out.println("PGgetNode "+nodeId);
+		environment.logError("PGgetNode "+nodeId, null);
 		IResult result = new ResultPojo();
 		String sql = IQueries.GET_NODE;
 	    IPostgresConnection conn = null;
-		Object obj = Long.valueOf(nodeId).toString();
+		Object obj = new Long(nodeId);
 		try {
 			conn = dbDriver.getConnection();
 			IResult r = conn.executeSelect(sql, obj);
