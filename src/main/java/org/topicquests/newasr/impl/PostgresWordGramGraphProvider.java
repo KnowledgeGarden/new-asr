@@ -88,9 +88,9 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		String sql = IQueries.PUT_PROPERTY;
 		Object [] obj = new Object[3];
 		//(id, _key, _val)
-		obj[0] = Long.valueOf(id).toString();
+		obj[0] = new Long(id);
 		obj[1] = key;
-		obj[2] = Long.valueOf(value).toString();
+		obj[2] = new Long(value);
 		IResult rx = conn.executeSQL(sql, obj);
 		if (rx.hasError())
 			r.addErrorString(rx.getErrorString());
@@ -101,7 +101,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		String sql = IQueries.PUT_PROPERTY;
 		Object [] obj = new Object[3];
 		//(id, _key, _val)
-		obj[0] = Long.valueOf(id).toString();
+		obj[0] = new Long(id);
 		obj[1] = key;
 		obj[2] = value;
 		IResult rx = conn.executeSQL(sql, obj);
@@ -113,7 +113,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		String sql = IQueries.PUT_PROPERTY;
 		Object [] obj = new Object[3];
 		//(id, _key, _val)
-		obj[0] = Long.valueOf(id).toString();
+		obj[0] = new Long(id);
 		obj[1] = key;
 		IResult rx;
 		Iterator<JsonElement> itr = vals.iterator();
@@ -143,14 +143,17 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		    ResultSet rs = (ResultSet)r.getResultObject();
 		    if (r.hasError())
 		    	result.addErrorString(r.getErrorString());
+			System.out.println("PGgetNode-1 "+nodeId+" "+rs);
 		    if (rs != null) {
 			    String key, value;	  
-		    	JsonObject jo = new JsonObject();
+		    	JsonObject jo = null;
 		    	while (rs.next()) {
+		    		if (jo == null) jo = new JsonObject();
 		    		key = rs.getString("_key");
 		    		value = rs.getString("_val");
 		    		loadNode(jo, key, value);
 		    	}
+		    	jo.addProperty("id", new Long(nodeId));
 		    	result.setResultObject(jo);
 		    }
 	    } catch (Exception e) {
@@ -190,8 +193,28 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 
 	@Override
 	public IResult addNodeProperties(long id, JsonObject keysVals) {
+		System.out.println("PGaddNodeProperties "+id+" "+keysVals);
 		IResult result = new ResultPojo();
-		// TODO Auto-generated method stub
+		Iterator<String> itr = keysVals.keySet().iterator();
+	    IPostgresConnection conn = null;
+	    String key, val;
+		try {
+			conn = dbDriver.getConnection();
+			while (itr.hasNext()) {
+				key = itr.next();
+				val = keysVals.get(key).getAsString();
+				if (key.equals("id")) {
+					this.putLongProperty(id, key, Long.valueOf(val).longValue(), conn, result);
+				} else
+					this.putProperty(id, key, val, conn, result);
+			}
+	    } catch (Exception e) {
+	    	result.addErrorString("GetNode "+e.getMessage());
+	    	environment.logError(e.getMessage(), e);
+	    } finally {
+	    	conn.closeConnection(result);
+	    }
+		
 		return result;
 	}
 

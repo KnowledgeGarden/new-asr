@@ -62,12 +62,17 @@ public class ASRModel implements IAsrModel {
 	public IResult processTerm(String term, String pos) {
 		System.out.println("ModelProcessingTerm "+term+" | "+pos);
 		IResult result = new ResultPojo();
-		boolean exists =termExists(term);
-		IResult r = dictionary.addTerm(term);
+		if (term.equals("\"")) {
+			result.setResultObject("1");
+			return result;
+		}
+		boolean exists =termExists(term); // in dictionary
+		IResult r = dictionary.addTerm(term); // add to get id
 		String id = (String)r.getResultObject();
+		boolean isInDB = termExistsInDB(id);
 		result.setResultObject(id);
 		long idl = new Long(id).longValue();
-		if (!exists) {
+		if (!isInDB) {
 			r = getTermById(id);
 			if (r.getResultObject() == null) {
 				JsonObject jo = new JsonObject();
@@ -116,5 +121,27 @@ public class ASRModel implements IAsrModel {
 	}
 	boolean termExists(String term) {
 		return dictionary.getTermId(term) != null;
+	}
+	boolean termExistsInDB(String term) {
+		IResult r = getThisTermById(term);
+	
+		return r.getResultObject() != null;
+	}
+
+	@Override
+	public IResult newDictionaryEntry(String term) {
+		IResult result = new ResultPojo();
+		if (term.equals("\"")) {
+			result.setResultObject("1");
+			return result;
+		}
+		result = dictionary.addTerm(term); 	
+		return result;
+	}
+
+	@Override
+	public IResult putWordGram(IWordGram newGram) {
+		IResult result = database.putNode(newGram);
+		return result;
 	}
 }

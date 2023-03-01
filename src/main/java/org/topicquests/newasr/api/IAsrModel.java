@@ -41,4 +41,13 @@ public interface IAsrModel {
 	 * @return
 	 */
 	IResult getThisTermById(String id);
+	
+	/////////////////////////
+	// For workflow:
+	//	We create a new dictionary entry for a term,
+	//  Then we craft an IWordGram with that new id
+	/////////////////////////
+	IResult newDictionaryEntry(String term);
+	
+	IResult putWordGram(IWordGram newGram);
 }
