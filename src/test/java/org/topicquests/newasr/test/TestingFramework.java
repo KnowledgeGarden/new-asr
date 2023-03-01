@@ -15,7 +15,8 @@ public class TestingFramework {
 	public static void main(String[] args) {
 		//new BootTest();
 		//new BootstrapTest();
-		new FirstNodeTest();
+		//new FirstNodeTest();
+		new SecondNodeTest();
 	}
 
 }

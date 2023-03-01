@@ -136,6 +136,7 @@ public class ASRModel implements IAsrModel {
 			return result;
 		}
 		result = dictionary.addTerm(term); 	
+		System.out.println("ASRNewDict "+term+" | "+result.getResultObject()+" | "+result.getErrorString());
 		return result;
 	}
 

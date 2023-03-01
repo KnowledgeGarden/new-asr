@@ -166,6 +166,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	}
 
 	void loadNode(JsonObject node, String key, String value) {
+		System.out.println("PGloadNode "+node+" | "+key+" | "+value);
 		JsonElement je = node.get(key);
 		JsonArray ja;
 		if (je == null)
