@@ -218,4 +218,42 @@ public class WordGram implements IWordGram {
 		return (this.getCannonTerm() > -1);
 	}
 
+	@Override
+	public void addExtensionProperty(String key, String value) {
+		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
+		if (extendedProperties == null) {
+			extendedProperties = new JsonObject();
+			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+		}
+		extendedProperties.addProperty(key, value);
+	}
+	@Override
+	public void addExtensionProperty(String key, JsonObject value) {
+		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
+		if (extendedProperties == null) {
+			extendedProperties = new JsonObject();
+			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+		}
+		extendedProperties.add(key, value);
+	}
+
+	@Override
+	public void addExtensionProperty(String key, JsonArray value) {
+		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
+		if (extendedProperties == null) {
+			extendedProperties = new JsonObject();
+			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+		}
+		extendedProperties.add(key, value);
+	}
+
+	@Override
+	public JsonElement getExtensionProperty(String key) {
+		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
+		if (extendedProperties == null)
+			return null;
+		return extendedProperties.get(key);
+	}
+
+
 }

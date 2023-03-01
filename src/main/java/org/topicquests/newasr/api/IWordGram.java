@@ -5,6 +5,7 @@ package org.topicquests.newasr.api;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 /**
  * @author jackpark
  *
@@ -93,4 +94,21 @@ public interface IWordGram extends IAddressable {
 	 * @return
 	 */
 	JsonArray listAntonyms();
+	
+	/**
+	 * <p>An <em>extension property</em> is one we haven't thought of yet.</p>
+	 * <p>To enable processing, the {@code key} should be distinctive, such as, e.g. {@code _myKey}</p>
+	 * @param key
+	 * @param value
+	 */
+	void addExtensionProperty(String key, String value);
+	void addExtensionProperty(String key, JsonObject value);
+	void addExtensionProperty(String key, JsonArray value);
+
+	/**
+	 * A {@link JsonElement} can be cast to many objects such as String, long, JsonArray, etc
+	 * @param key
+	 * @return
+	 */
+	JsonElement getExtensionProperty(String key);
 }

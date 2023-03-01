@@ -27,5 +27,6 @@ public interface IConstants {
 		INVERSE_KEY		= "inverse",// inverse predicate - only for passive predicates
 		CANNON_KEY		= "cannon",	// canonical NER
 		SYNONYM_KEY		= "synon",	// synonyms
-		ANTONYM_KEY		= "anton";	// antonyms
+		ANTONYM_KEY		= "anton",	// antonyms
+		EXTENSION_KEY	= "extns";	// for extension properties
 }
