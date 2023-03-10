@@ -35,17 +35,17 @@ public interface IWordGram extends IAddressable {
 	 * Can return {@code null}
 	 * @return - list of JSON objects
 	 */
-	JsonArray listDBpedia();
+	String getDBpedia();
 	
-	void addDBpedia(String dbPediaJson);
+	void setDBpedia(String dbPediaJson);
 	
 	/**
 	 * Can return {@code null}
 	 * @return list of wikidata identifiers
 	 */
-	JsonArray listWikidata();
+	String getWikidata();
 	
-	void addWikidata(String wikidataId);
+	void setWikidata(String wikidataId);
 	
 	/**
 	 * Can return {@code null}

@@ -109,38 +109,28 @@ public class WordGram implements IWordGram {
 	}
 
 	@Override
-	public JsonArray listDBpedia() {
+	public String getDBpedia() {
 		JsonElement jo = data.get(IConstants.DBPED_KEY);
 		if (jo == null) return null;
-		return jo.getAsJsonArray();
+		return jo.getAsString();
 	}
 
 	@Override
-	public void addDBpedia(String dbPediaJson) {
-		JsonArray ja = listDBpedia();
-		if (ja == null) {
-			ja = new JsonArray();
-		}
-		ja.add(dbPediaJson);
-		data.add(IConstants.DBPED_KEY, ja);
+	public void setDBpedia(String dbPediaJson) {
+		data.addProperty(IConstants.DBPED_KEY, dbPediaJson);
 
 	}
 
 	@Override
-	public JsonArray listWikidata() {
+	public String getWikidata() {
 		JsonElement jo = data.get(IConstants.WIKID_KEY);
 		if (jo == null) return null;
-		return jo.getAsJsonArray();
+		return jo.getAsString();
 	}
 
 	@Override
-	public void addWikidata(String wikidataId) {
-		JsonArray ja = listWikidata();
-		if (ja == null) {
-			ja = new JsonArray();
-		}
-		ja.add(wikidataId);
-		data.add(IConstants.WIKID_KEY, ja);
+	public void setWikidata(String wikidataId) {
+		data.addProperty(IConstants.WIKID_KEY, wikidataId);
 	}
 
 	@Override

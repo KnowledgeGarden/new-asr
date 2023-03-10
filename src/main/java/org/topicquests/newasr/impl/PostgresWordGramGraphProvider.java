@@ -46,13 +46,17 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    try {
 		      conn = dbDriver.getConnection();
 		      String sql = IQueries.PUT_NODE;
-		      //(id, words, pos, topicid, dbpedia wikidata, active, cannon)
+		      //(id, words, pos, topicid, dbpedia wikidata, tense, epi, active, cannon)
 		      Object [] vals = new Object[10];
-		      vals[0] = new Long(objectId);
-		      vals[1] = node.getWords();
-		      JsonArray x = node.listTopicLocators();
+		      vals[0] = new Long(objectId);			//id
+		      vals[1] = node.getWords();			//wods
+		      JsonArray x = node.listPOS();
 		      String ts = jsonArrayToCommaString(x);
-		      vals[2] = ts; // might be null;
+		      vals[2] = ts; 						// pos might be null;
+		      x = node.listTopicLocators();
+		      ts = jsonArrayToCommaString(x);
+		      vals[3] = ts;							//  locators
+		      vals[4] = node.getDBpedia();
 		      //TODO
 		      
 	    } catch (Exception e) {
