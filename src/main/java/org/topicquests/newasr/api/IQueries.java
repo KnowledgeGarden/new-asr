@@ -59,8 +59,8 @@ public interface IQueries {
 			"Select * FROM pubic.outlinks WHERE id=?",
  
 		PUT_NODE =
-			"INSERT INTO public.node (id, words, pos, topicid, dbpedia wikidata, active, cannon) "+
-			"VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			"INSERT INTO public.node (id, words, pos, topicid, dbpedia wikidata, tense, epi, active, cannon) "+
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		PUT_INlINK =	
 			"INSERT INTO public.inlinks (id, isentenceId, itargetId) VALUES (?, ?, ?)",
 		PUT_OUTlINK =	
