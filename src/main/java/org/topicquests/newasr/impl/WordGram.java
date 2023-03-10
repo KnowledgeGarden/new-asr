@@ -255,5 +255,29 @@ public class WordGram implements IWordGram {
 		return extendedProperties.get(key);
 	}
 
+	@Override
+	public void setTense(String tense) {
+		data.addProperty(IConstants.TENSE_KEY, tense);
+	}
+
+	@Override
+	public String getTense() {
+		JsonElement jo = data.get(IConstants.TENSE_KEY);
+		if (jo == null) return null;
+		return jo.getAsString();
+	}
+
+	@Override
+	public void setEpistemicStatus(String status) {
+		data.addProperty(IConstants.EPI_KEY, status);
+	}
+
+	@Override
+	public String getEpistemicStatus() {
+		JsonElement jo = data.get(IConstants.EPI_KEY);
+		if (jo == null) return null;
+		return jo.getAsString();
+	}
+
 
 }

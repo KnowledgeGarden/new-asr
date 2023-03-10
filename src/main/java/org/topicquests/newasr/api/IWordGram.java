@@ -96,6 +96,28 @@ public interface IWordGram extends IAddressable {
 	JsonArray listAntonyms();
 	
 	/**
+	 * Predicate tense,e.g.past
+	 * @param tense
+	 */
+	void setTense(String tense);
+	/**
+	 * Can return {@code null}
+	 * @return
+	 */
+	String getTense();
+	/**
+	 * Epistemic status e.g. speculative
+	 * @param status
+	 */
+	void setEpistemicStatus(String status);
+	
+	/**
+	 * Can return {@code null}
+	 * @return
+	 */
+	String getEpistemicStatus();
+	
+	/**
 	 * <p>An <em>extension property</em> is one we haven't thought of yet.</p>
 	 * <p>To enable processing, the {@code key} should be distinctive, such as, e.g. {@code _myKey}</p>
 	 * @param key
