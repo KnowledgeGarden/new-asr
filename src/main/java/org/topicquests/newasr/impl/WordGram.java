@@ -210,8 +210,9 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void addExtensionProperty(String key, String value) {
-		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
-		if (extendedProperties == null) {
+		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonObject extendedProperties = null;
+		if (je == null) {
 			extendedProperties = new JsonObject();
 			data.add(IConstants.EXTENSION_KEY, extendedProperties);
 		}
@@ -219,8 +220,9 @@ public class WordGram implements IWordGram {
 	}
 	@Override
 	public void addExtensionProperty(String key, JsonObject value) {
-		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
-		if (extendedProperties == null) {
+		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonObject extendedProperties = null;
+		if (je == null) {
 			extendedProperties = new JsonObject();
 			data.add(IConstants.EXTENSION_KEY, extendedProperties);
 		}
@@ -229,8 +231,9 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void addExtensionProperty(String key, JsonArray value) {
-		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
-		if (extendedProperties == null) {
+		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonObject extendedProperties = null;
+		if (je == null) {
 			extendedProperties = new JsonObject();
 			data.add(IConstants.EXTENSION_KEY, extendedProperties);
 		}
@@ -239,9 +242,12 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public JsonElement getExtensionProperty(String key) {
-		JsonObject extendedProperties = data.get(IConstants.EXTENSION_KEY).getAsJsonObject();
-		if (extendedProperties == null)
+		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonObject extendedProperties = null;
+		if (je == null) 
 			return null;
+		else 
+			extendedProperties = je.getAsJsonObject();
 		return extendedProperties.get(key);
 	}
 
@@ -267,6 +273,14 @@ public class WordGram implements IWordGram {
 		JsonElement jo = data.get(IConstants.EPI_KEY);
 		if (jo == null) return null;
 		return jo.getAsString();
+	}
+
+	@Override
+	public JsonObject getExtensionPropeties() {
+		JsonElement extendedProperties = data.get(IConstants.EXTENSION_KEY);
+		if (extendedProperties == null)
+			return null;
+		return extendedProperties.getAsJsonObject();
 	}
 
 

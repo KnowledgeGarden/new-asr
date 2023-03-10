@@ -56,7 +56,19 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		      x = node.listTopicLocators();
 		      ts = jsonArrayToCommaString(x);
 		      vals[3] = ts;							//  locators
-		      vals[4] = node.getDBpedia();
+		      vals[4] = node.getDBpedia();			// dbpedia
+		      vals[5] = node.getWikidata();			// wikidata
+		      vals[6] = node.getTense();			// tense
+		      vals[7] = node.getEpistemicStatus();	// epistemic status
+		      long inx  = -1;
+		      Long vx = null;
+		      if (node.hasInverseTerm())
+		    	  vx = new Long(node.getInverseTerm());
+		      vals[8] = vx;							//inverse predicate
+		      if (node.hasCannonicalTerm())
+		    	  vx = new Long(node.getCannonTerm());
+		      vals[9] = vx;							//canonical term
+		    	
 		      //TODO
 		      
 	    } catch (Exception e) {

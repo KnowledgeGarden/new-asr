@@ -133,4 +133,10 @@ public interface IWordGram extends IAddressable {
 	 * @return
 	 */
 	JsonElement getExtensionProperty(String key);
+	
+	/**
+	 * Can return {@code null}
+	 * @return
+	 */
+	JsonObject getExtensionPropeties();
 }
