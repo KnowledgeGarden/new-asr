@@ -36,8 +36,57 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		environment = e;
 		dbDriver = environment.getDatabaseDriver();
 	}
-
 	@Override
+	public IResult putNode(IWordGram node) {
+		IResult result = new ResultPojo();
+	    IPostgresConnection conn = null;
+	    JsonObject data = node.getData();
+	    long objectId=node.getId();
+	    JsonArray foo =null;
+	    try {
+		      conn = dbDriver.getConnection();
+		      String sql = IQueries.PUT_NODE;
+		      //(id, words, pos, topicid, dbpedia wikidata, active, cannon)
+		      Object [] vals = new Object[10];
+		      vals[0] = new Long(objectId);
+		      vals[1] = node.getWords();
+		      JsonArray x = node.listTopicLocators();
+		      String ts = jsonArrayToCommaString(x);
+		      vals[2] = ts; // might be null;
+		      //TODO
+		      
+	    } catch (Exception e) {
+	      result.addErrorString("PDD-4 "+objectId+" "+e.getMessage());
+	      environment.logError("PDD-5 "+objectId+" "+result.getErrorString(), null);
+	    } finally {
+	    	conn.closeConnection(result);
+	    }
+		return result;
+
+	}
+
+	/**
+	 * Can return {@code null
+	 * @param array
+	 * @return
+	 */
+	String jsonArrayToCommaString(JsonArray array) {
+		if (array == null || array.size() == 0) return null;
+		StringBuilder buf = new StringBuilder();
+		Iterator<JsonElement> itr = array.iterator();
+		JsonElement je;
+		boolean isFirst = true;
+		while (itr.hasNext()) {
+			if (isFirst) 
+				isFirst = false;
+			else 
+				buf.append(", ");
+			je= itr.next();
+			buf.append(je.getAsString());
+		}
+		return buf.toString().trim();
+	}
+	/*@Override
 	public IResult putNode(IWordGram node) {
 		IResult result = new ResultPojo();
 	    IPostgresConnection conn = null;
@@ -82,7 +131,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    	conn.closeConnection(result);
 	    }
 		return result;
-	}
+	}*/
 	private void putLongProperty(long id, String key, long value, IPostgresConnection conn, IResult r) {
 		if (value == -1) return;
 		String sql = IQueries.PUT_PROPERTY;
