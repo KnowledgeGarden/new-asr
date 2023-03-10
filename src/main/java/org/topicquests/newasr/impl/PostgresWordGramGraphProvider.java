@@ -68,9 +68,15 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		      if (node.hasCannonicalTerm())
 		    	  vx = new Long(node.getCannonTerm());
 		      vals[9] = vx;							//canonical term
-		    	
-		      //TODO
+		      IResult rx = conn.executeSQL(sql, vals);
+		      if (rx.hasError())
+				result.addErrorString(rx.getErrorString());
 		      
+		      //extension propeties
+		      JsonObject props = node.getExtensionPropeties();
+		      if (props != null) {
+		    	  // TODO
+		      }
 	    } catch (Exception e) {
 	      result.addErrorString("PDD-4 "+objectId+" "+e.getMessage());
 	      environment.logError("PDD-5 "+objectId+" "+result.getErrorString(), null);
