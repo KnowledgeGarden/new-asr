@@ -13,7 +13,7 @@ import org.topicquests.support.api.IResult;
  */
 public class SecondNodeTest extends TestingRoot {
 	private final String
-		TERM		= "My favorite phrase revisited again",
+		TERM		= "My favorite phrase revisited again more",
 		SENTENCE_ID	= "101",
 		IN_ID		= "999",
 		OUT_ID		= "12898",

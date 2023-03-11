@@ -75,12 +75,14 @@ public class ASRModel implements IAsrModel {
 		if (!isInDB) {
 			r = getTermById(id);
 			if (r.getResultObject() == null) {
+				IWordGram wg = new WordGram();
+				wg.setId(idl);
+				wg.setWords(term);
 				JsonObject jo = new JsonObject();
-				jo.addProperty(IConstants.WORDS_KEY, term);
 				if (pos != null)
-					jo.addProperty(IConstants.POS_KEY, pos);
+					wg.addPOS(pos);
 
-				r = database.addNodeProperties(idl, jo);
+				r = database.putNode(wg);
 				if (r.hasError())
 					result.addErrorString(r.getErrorString());
 			}
@@ -111,9 +113,8 @@ public class ASRModel implements IAsrModel {
 	public IResult getThisTermById(String id) {
 		System.out.println("ASRGetThis "+id);
 		IResult result = database.getNode(new Long(id).longValue());
-		JsonObject jo = (JsonObject)result.getResultObject();
-		if (jo != null) {
-			IWordGram wg = new WordGram(jo);
+		IWordGram wg = (IWordGram)result.getResultObject();
+		if (wg != null) {
 			cache.add(id,wg);
 			result.setResultObject(wg);
 		}

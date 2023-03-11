@@ -313,7 +313,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	void getLinks(long nodeId, IWordGram wg, IPostgresConnection conn, IResult r ) throws Exception {
 		//inlinks
 		Object [] obj = new Object[1];
-		obj[0] = Long.toString(nodeId);
+		obj[0] = new Long(nodeId);
 		IResult rx;
 		String sql = IQueries.GET_INLINKS;
 		rx = conn.executeSelect(sql, obj);
@@ -322,7 +322,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		ResultSet rs = (ResultSet)rx.getResultObject();
 		if (rs != null) {
 			while (rs.next()) {
-				wg.addInLink(rs.getLong("isentenceId"), rs.getLong("itargetId"));
+				wg.addInLink(Long.valueOf(rs.getString("isentenceId")), Long.valueOf(rs.getString("itargetId")));
 			}
 		}
 		
@@ -334,7 +334,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		rs = (ResultSet)rx.getResultObject();
 		if (rs != null) {
 			while (rs.next()) {
-				wg.addInLink(rs.getLong("osentenceId"), rs.getLong("otargetId"));
+				wg.addInLink(Long.valueOf(rs.getString("osentenceId")), Long.valueOf(rs.getString("otargetId")));
 			}
 		}
 
@@ -342,7 +342,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	void getProperties(long nodeId, IWordGram wg, IPostgresConnection conn, IResult r ) throws Exception {
 		String sql = IQueries.GET_PROPERTIES;
 		Object [] obj = new Object[1];
-		obj[0] = Long.toString(nodeId);
+		obj[0] = new Long(nodeId);
 		IResult rx = conn.executeSelect(sql, obj);
 		if (rx.hasError())
 			r.addErrorString(rx.getErrorString());

@@ -57,12 +57,12 @@ public interface IQueries {
 		GET_NODE =
 			"SELECT * FROM public.node where id=?",
 		GET_INLINKS =
-			"Select * FROM pubic.inlinks WHERE id=?",
+			"SELECT * FROM public.inlinks WHERE id=?",
 		GET_OUTLINKS =
-			"Select * FROM pubic.outlinks WHERE id=?",
+			"SELECT * FROM public.outlinks WHERE id=?",
  
 		PUT_NODE =
-			"INSERT INTO public.node (id, words, pos, topicid, dbpedia wikidata, tense, epi, active, cannon) "+
+			"INSERT INTO public.node (id, words, pos, topicid, dbpedia, wikidata, tense, epi, active, cannon) "+
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		PUT_INlINK =	
 			"INSERT INTO public.inlinks (id, isentenceId, itargetId) VALUES (?, ?, ?)",
@@ -89,7 +89,7 @@ public interface IQueries {
 		PUT_PROPERTY =
 			"INSERT INTO public.properties (id, _key, _val) VALUES (?, ?, ?)",
 		GET_PROPERTIES =
-			"SELECT * FROM public.propeties where id=?",
+			"SELECT * FROM public.properties where id=?",
 		REMOVE_PROPERTY =
 			"DELETE FROM public.properties where id=? _key=? _val=?"; // TODO may need AND
 }
