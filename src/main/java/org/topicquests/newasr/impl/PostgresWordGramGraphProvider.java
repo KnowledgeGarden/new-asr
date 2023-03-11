@@ -71,6 +71,8 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		      IResult rx = conn.executeSQL(sql, vals);
 		      if (rx.hasError())
 				result.addErrorString(rx.getErrorString());
+		      // links
+		      putLinks(objectId, node, conn, rx);
 		      
 		      //extension propeties
 		      JsonObject props = node.getExtensionPropeties();
@@ -95,7 +97,20 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		return result;
 
 	}
-
+	void putLinks(long nodeId, IWordGram wg, IPostgresConnection conn, IResult r )  {
+		JsonArray inL = wg.listInLinks();
+		JsonArray outL = wg.listOutLinks();
+		if (inL == null && outL == null) return;
+		//inLInks
+		String sql;
+		if (inL != null) {
+			sql = IQueries.GET_INLINKS;
+		}
+		if (outL != null) {
+			sql = IQueries.GET_OUTLINKS;
+		}
+		
+	}
 	/**
 	 * Can return {@code null
 	 * @param array
@@ -245,11 +260,18 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 			    	if (rs.getString("cannon") != null)
 			    		wg.setCannonTerm(rs.getLong("cannon"));
 			    	if (rs.getString("pos") != null) {
-			    		
+			    		wg.setPOS(stringToJA(rs.getString("pos")));
 			    	}
 			    	if (rs.getString("topicid") != null) {
-			    		
+			    		wg.setTopicLocators(stringToJA(rs.getString("topicid")));
 			    	}
+			    	IResult rx = new ResultPojo();
+			    	// fetch links
+			    	getLinks(nodeId, wg, conn, rx);
+			    	if (rx.hasError())
+			    		result.addErrorString(rx.getErrorString());
+			    	// fetch extended properties
+			    	getProperties(nodeId, wg, conn, rx);
 		    	}
 		    }
 	    } catch (Exception e) {
@@ -258,6 +280,30 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    } finally {
 	    	conn.closeConnection(result);
 	    }
+		return result;
+	}
+	
+	void getLinks(long nodeId, IWordGram wg, IPostgresConnection conn, IResult r ) {
+		//inlinks
+		String sql = IQueries.GET_INLINKS;
+
+		
+		//outloinks
+		sql = IQueries.GET_OUTLINKS;
+
+	}
+	void getProperties(long nodeId, IWordGram wg, IPostgresConnection conn, IResult r ) {
+		String sql = IQueries.GET_PROPERTIES;
+
+	}
+	
+	JsonArray stringToJA(String commaDelimitedString) {
+		environment.logError("PWGPsplit "+commaDelimitedString, null);
+		JsonArray  result = new JsonArray();
+		String [] foo = commaDelimitedString.split(",");
+		int len = foo.length;
+		for (int i=0;i<len;i++)
+			result.add(foo[i].trim());
 		return result;
 	}
 /*	@Override

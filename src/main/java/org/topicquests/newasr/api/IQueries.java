@@ -3,6 +3,9 @@
  */
 package org.topicquests.newasr.api;
 
+import org.topicquests.pg.api.IPostgresConnection;
+import org.topicquests.support.api.IResult;
+
 /**
  * @author jackpark
  *
@@ -85,6 +88,8 @@ public interface IQueries {
 
 		PUT_PROPERTY =
 			"INSERT INTO public.properties (id, _key, _val) VALUES (?, ?, ?)",
+		GET_PROPERTIES =
+			"SELECT * FROM public.propeties where id=?",
 		REMOVE_PROPERTY =
 			"DELETE FROM public.properties where id=? _key=? _val=?"; // TODO may need AND
 }
