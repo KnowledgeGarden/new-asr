@@ -146,4 +146,11 @@ public class ASRModel implements IAsrModel {
 		IResult result = database.putNode(newGram);
 		return result;
 	}
+
+	@Override
+	public IResult processPredicate(String term, String pos, String inverseTerm, String cannonicalTerm,
+			String epistemicStatus, boolean isNegative) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

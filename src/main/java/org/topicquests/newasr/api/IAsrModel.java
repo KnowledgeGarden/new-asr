@@ -29,6 +29,19 @@ public interface IAsrModel {
 	IResult processTerm(String term, String pos);
 	
 	/**
+	 * For importing predicates from csv files
+	 * @param term
+	 * @param pos
+	 * @param inverseTerm		can be {@code null}
+	 * @param cannonicalTerm	can be {@code null}
+	 * String epistemicStatus	can be {@code null}
+	 * @param isNegative
+	 * @return
+	 */
+	IResult processPredicate(String term, String pos, String inverseTerm, String cannonicalTerm,
+			String epistemicStatus, boolean isNegative);
+	
+	/**
 	 * Fetch a term by its {@code id}
 	 * @param id
 	 * @return
