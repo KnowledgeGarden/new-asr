@@ -8,6 +8,7 @@ import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IDictionary;
 import org.topicquests.newasr.api.IDictionaryClient;
 import org.topicquests.newasr.bootstrap.BootstrapEngine;
+import org.topicquests.newasr.bootstrap.PredicateImporter;
 import org.topicquests.newasr.dictionary.DictionaryHttpClient;
 import org.topicquests.newasr.dictionary.DictionaryClient;
 import org.topicquests.newasr.impl.ASRModel;
@@ -28,6 +29,7 @@ public class ASREnvironment extends RootEnvironment {
 	private BootstrapEngine booter;
 	private IAsrDataProvider database;
 	private WordGramUtil wgUtil;
+	private PredicateImporter predImporter;
 	/**
 	 * 
 	 */
@@ -43,8 +45,12 @@ public class ASREnvironment extends RootEnvironment {
 		wgUtil = new WordGramUtil(this);
 		// firing up WordGramUtil bootstraps punctuation wordgram if not already there
 		booter = new BootstrapEngine(this);
+		predImporter = new PredicateImporter(this);
 	}
 	
+	public PredicateImporter getPredicateImporter() {
+		return predImporter;
+	}
 	public IAsrDataProvider getDatabase() {
 		return database;
 	}

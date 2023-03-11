@@ -8,6 +8,9 @@
 	<parameter name="DatabaseName" value = "asrtest" />
 	<parameter name="DatabaseSchema" value = "public" />
 	
+	<!-- Bootstrapping data files -->
+	<parameter name="PredCSV" value="./data/predicates/ASRpreds.csv/" /> <!--  pay attention to filename -->
+	
 	<!-- Dictionary server -->
 	<!-- this agent commmunicates with the Dictionary Server -->
 	<parameter name="DictServerURl" value="localhost" /> <!--  coordinate with Dictionary -->
