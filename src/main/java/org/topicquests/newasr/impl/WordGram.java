@@ -73,10 +73,11 @@ public class WordGram implements IWordGram {
 		if (ja == null) {
 			ja = new JsonArray();
 		}
-		JsonObject jo = new JsonObject();
-		jo.addProperty(Long.toString(sentenceId), gramId);
-		ja.add(jo);
-		data.add(IConstants.IN_KEY, ja);
+		//JsonObject jo = new JsonObject();
+		//jo.addProperty(Long.toString(sentenceId), gramId);
+		//ja.add(jo);
+		String thelink = Long.toString(sentenceId) + ","  +Long.toString(gramId);
+		data.addProperty(IConstants.IN_KEY, thelink);
 	}
 
 	@Override
@@ -85,10 +86,11 @@ public class WordGram implements IWordGram {
 		if (ja == null) {
 			ja = new JsonArray();
 		}
-		JsonObject jo = new JsonObject();
-		jo.addProperty(Long.toString(sentenceId), gramId);
-		ja.add(jo);
-		data.add(IConstants.OUT_KEY, ja);
+		//JsonObject jo = new JsonObject();
+		//jo.addProperty(Long.toString(sentenceId), gramId);
+		//ja.add(jo);
+		String thelink = Long.toString(sentenceId) + ","  +Long.toString(gramId);
+		data.addProperty(IConstants.OUT_KEY, thelink);
 	}
 
 	@Override

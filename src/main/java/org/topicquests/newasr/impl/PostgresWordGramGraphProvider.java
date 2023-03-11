@@ -103,11 +103,38 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		if (inL == null && outL == null) return;
 		//inLInks
 		String sql;
+		IResult rx;
+		Object [] obj = new Object[3];
+		obj [0] = Long.toString(nodeId);
+		Iterator<JsonElement> itr;
+		String theProp;
+		String [] px;
 		if (inL != null) {
-			sql = IQueries.GET_INLINKS;
+			sql = IQueries.PUT_INlINK;
+			//(id, isentenceId, itargetId)
+			itr =inL.iterator();
+			while (itr.hasNext()) {
+				theProp = itr.next().getAsString();
+				px = theProp.split(",");
+				obj[1] = px[0].trim();
+				obj[2] = px[1].trim();
+				rx = conn.executeSQL(sql, obj);
+				if (rx.hasError())
+					r.addErrorString(rx.getErrorString());
+			}
 		}
 		if (outL != null) {
-			sql = IQueries.GET_OUTLINKS;
+			sql = IQueries.PUT_OUTlINK;
+			itr =outL.iterator();
+			while (itr.hasNext()) {
+				theProp = itr.next().getAsString();
+				px = theProp.split(",");
+				obj[1] = px[0].trim();
+				obj[2] = px[1].trim();
+				rx = conn.executeSQL(sql, obj);
+				if (rx.hasError())
+					r.addErrorString(rx.getErrorString());
+			}
 		}
 		
 	}
