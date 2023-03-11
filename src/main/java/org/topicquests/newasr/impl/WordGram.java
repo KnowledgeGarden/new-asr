@@ -107,6 +107,11 @@ public class WordGram implements IWordGram {
 		ja.add(locator);
 		data.add(IConstants.LOX_KEY, ja);
 	}
+	@Override
+	public void setTopicLocators(JsonArray locators) {
+		data.add(IConstants.LOX_KEY, locators);
+	}
+
 
 	@Override
 	public String getDBpedia() {
@@ -149,6 +154,12 @@ public class WordGram implements IWordGram {
 		ja.add(pos);
 		data.add(IConstants.POS_KEY, ja);
 	}
+	
+	@Override
+	public void setPOS(JsonArray pos) {
+		data.add(IConstants.POS_KEY, pos);
+	}
+
 
 	@Override
 	public void setInverseTerm(long inverseTermId) {
@@ -283,6 +294,7 @@ public class WordGram implements IWordGram {
 			return null;
 		return extendedProperties.getAsJsonObject();
 	}
+
 
 
 }

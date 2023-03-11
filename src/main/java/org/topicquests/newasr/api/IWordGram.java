@@ -31,6 +31,8 @@ public interface IWordGram extends IAddressable {
 	
 	void addTopicLosator(String locator);
 	
+	void setTopicLocators(JsonArray locators);
+	
 	/**
 	 * Can return {@code null}
 	 * @return - list of JSON objects
@@ -54,6 +56,8 @@ public interface IWordGram extends IAddressable {
 	JsonArray listPOS();
 	
 	void addPOS(String pos);
+	
+	void setPOS(JsonArray pos);
 	
 	void setInverseTerm(long inverseTermId);
 	/**
