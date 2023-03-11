@@ -218,7 +218,7 @@ public class WordGram implements IWordGram {
 		}
 		extendedProperties.addProperty(key, value);
 	}
-	@Override
+/*	@Override
 	public void addExtensionProperty(String key, JsonObject value) {
 		JsonElement je = data.get(IConstants.EXTENSION_KEY);
 		JsonObject extendedProperties = null;
@@ -239,6 +239,7 @@ public class WordGram implements IWordGram {
 		}
 		extendedProperties.add(key, value);
 	}
+*/
 
 	@Override
 	public JsonElement getExtensionProperty(String key) {

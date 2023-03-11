@@ -124,8 +124,8 @@ public interface IWordGram extends IAddressable {
 	 * @param value
 	 */
 	void addExtensionProperty(String key, String value);
-	void addExtensionProperty(String key, JsonObject value);
-	void addExtensionProperty(String key, JsonArray value);
+	//void addExtensionProperty(String key, JsonObject value);
+	//void addExtensionProperty(String key, JsonArray value);
 
 	/**
 	 * A {@link JsonElement} can be cast to many objects such as String, long, JsonArray, etc
