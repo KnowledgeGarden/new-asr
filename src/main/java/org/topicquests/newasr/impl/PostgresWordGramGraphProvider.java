@@ -43,7 +43,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    JsonObject data = node.getData();
 	    long objectId=node.getId();
 	    JsonArray foo =null;
-	    try {
+	    try { //TODO Transaction?
 		      conn = dbDriver.getConnection();
 		      String sql = IQueries.PUT_NODE;
 		      //(id, words, pos, topicid, dbpedia wikidata, tense, epi, active, cannon)
@@ -75,7 +75,16 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		      //extension propeties
 		      JsonObject props = node.getExtensionPropeties();
 		      if (props != null) {
-		    	  // TODO
+		    	  Iterator<String> itr = props.keySet().iterator();
+		    	  String key;
+		    	  while (itr.hasNext()) {
+		    		  key = itr.next();
+		    		  this.putProperty(objectId,
+		    		  						 key, props.get(key).getAsString(),
+		    		  						 conn, rx);
+		    		  if (rx.hasError())
+		    			  result.addErrorString(rx.getErrorString());
+		    	  }
 		      }
 	    } catch (Exception e) {
 	      result.addErrorString("PDD-4 "+objectId+" "+e.getMessage());
@@ -208,6 +217,57 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 		String sql = IQueries.GET_NODE;
 	    IPostgresConnection conn = null;
 		Object obj = new Long(nodeId);
+		IWordGram wg = null;
+		try {
+			conn = dbDriver.getConnection();
+			// fetch core
+			IResult r = conn.executeSelect(sql, obj);
+		    ResultSet rs = (ResultSet)r.getResultObject();
+		    if (r.hasError())
+		    	result.addErrorString(r.getErrorString());
+			System.out.println("PGgetNode-1 "+nodeId+" "+rs);
+		    if (rs != null) {
+		    	if (rs.next()) {
+			    	wg = new WordGram();
+			    	result.setResultObject(wg);
+			    	wg.setId(nodeId);
+			    	wg.setWords(rs.getString("words"));
+			    	if (rs.getString("dbpedia") != null)
+			    		wg.setDBpedia(rs.getString("dbpedia"));
+			    	if (rs.getString("wikidata") != null)
+			    		wg.setWikidata(rs.getString("wikidata"));
+			    	if (rs.getString("tense") != null)
+			    		wg.setTense(rs.getString("tense"));
+			    	if (rs.getString("epi") != null)
+			    		wg.setEpistemicStatus(rs.getString("epi"));
+			    	if (rs.getString("active") != null)
+			    		wg.setInverseTerm(rs.getLong("active"));
+			    	if (rs.getString("cannon") != null)
+			    		wg.setCannonTerm(rs.getLong("cannon"));
+			    	if (rs.getString("pos") != null) {
+			    		
+			    	}
+			    	if (rs.getString("topicid") != null) {
+			    		
+			    	}
+		    	}
+		    }
+	    } catch (Exception e) {
+	    	result.addErrorString("GetNode "+e.getMessage());
+	    	environment.logError(e.getMessage(), e);
+	    } finally {
+	    	conn.closeConnection(result);
+	    }
+		return result;
+	}
+/*	@Override
+	public IResult getNode(long nodeId) {
+		System.out.println("PGgetNode "+nodeId);
+		environment.logError("PGgetNode "+nodeId, null);
+		IResult result = new ResultPojo();
+		String sql = IQueries.GET_NODE;
+	    IPostgresConnection conn = null;
+		Object obj = new Long(nodeId);
 		try {
 			conn = dbDriver.getConnection();
 			IResult r = conn.executeSelect(sql, obj);
@@ -235,7 +295,7 @@ public class PostgresWordGramGraphProvider implements IAsrDataProvider {
 	    }
 		return result;
 	}
-
+*/
 	void loadNode(JsonObject node, String key, String value) {
 		System.out.println("PGloadNode "+node+" | "+key+" | "+value);
 		JsonElement je = node.get(key);
