@@ -5,6 +5,8 @@ package org.topicquests.newasr.bootstrap;
 
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrModel;
+import org.topicquests.support.ResultPojo;
+import org.topicquests.support.api.IResult;
 
 /**
  * @author jackpark
@@ -23,7 +25,9 @@ public class PredicateImporter {
 		PATH = environment.getStringProperty("PredCSV");
 	}
 
-	public void bootPredicates() {
+	public IResult bootPredicates() {
+		IResult result = new ResultPojo();
 		//TODO
+		return result;
 	}
 }

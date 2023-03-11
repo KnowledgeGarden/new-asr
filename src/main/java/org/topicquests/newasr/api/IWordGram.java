@@ -33,6 +33,9 @@ public interface IWordGram extends IAddressable {
 	
 	void setTopicLocators(JsonArray locators);
 	
+	void setNegation(boolean isNeg);
+	boolean getNegation();
+	
 	/**
 	 * Can return {@code null}
 	 * @return - list of JSON objects

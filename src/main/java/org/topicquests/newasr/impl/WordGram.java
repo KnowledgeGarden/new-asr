@@ -30,7 +30,6 @@ public class WordGram implements IWordGram {
 	@Override
 	public void setId(long id) {
 		data.addProperty(IConstants.ID_KEY, new Long(id));
-
 	}
 
 	@Override
@@ -295,6 +294,19 @@ public class WordGram implements IWordGram {
 		if (extendedProperties == null)
 			return null;
 		return extendedProperties.getAsJsonObject();
+	}
+
+	@Override
+	public void setNegation(boolean isNeg) {
+		data.addProperty(IConstants.NEGATION_KEY, isNeg);
+	}
+
+	@Override
+	public boolean getNegation() {
+		JsonElement je = data.get(IConstants.NEGATION_KEY);
+		if (je == null)
+			return false;
+		return je.getAsBoolean();
 	}
 
 

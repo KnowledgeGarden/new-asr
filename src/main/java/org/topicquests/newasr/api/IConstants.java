@@ -23,7 +23,8 @@ public interface IConstants {
 		DBPED_KEY		= "dbp",	// dbpedia
 		WIKID_KEY		= "wikd",	// wikidata
 		TENSE_KEY		= "tense",  // predicate tense,e.g.past,present,
-		EPI_KEY		= "epi",	// epistemic status,e.g. speculative,can be null
+		NEGATION_KEY	= "neg",	// boolean
+		EPI_KEY		= 	"epi",		// epistemic status,e.g. speculative,can be null
 		POS_KEY			= "pos",	// part of speech
 		WORDS_KEY		= "words",	// the text for this gram
 		INVERSE_KEY		= "inverse",// inverse predicate - only for passive predicates
