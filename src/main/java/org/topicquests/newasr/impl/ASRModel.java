@@ -9,6 +9,7 @@ import org.topicquests.newasr.api.IAsrDataProvider;
 import org.topicquests.newasr.api.IAsrModel;
 import org.topicquests.newasr.api.IConstants;
 import org.topicquests.newasr.api.IDictionary;
+import org.topicquests.newasr.api.IPOS;
 import org.topicquests.newasr.api.IWordGram;
 import org.topicquests.newasr.wg.WordGramCache;
 import org.topicquests.support.ResultPojo;
@@ -148,9 +149,69 @@ public class ASRModel implements IAsrModel {
 	}
 
 	@Override
-	public IResult processPredicate(String term, String pos, String inverseTerm, String cannonicalTerm,
+	public IResult processPredicate(String term, String tense, String inverseTerm, String cannonicalTerm,
 			String epistemicStatus, boolean isNegative) {
-		// TODO Auto-generated method stub
-		return null;
+		IResult result = new ResultPojo();
+		IResult r;
+		boolean exists =termExists(term); // in dictionary
+		r = dictionary.addTerm(term); // add to get id
+		String id = (String)r.getResultObject();
+		String invId = null;
+		String canonId = null;
+		if (inverseTerm != null) {
+			r = dictionary.addTerm(inverseTerm);
+			invId = (String)r.getResultObject();
+		}
+		if (cannonicalTerm != null) {
+			r = dictionary.addTerm(cannonicalTerm);
+			canonId = (String)r.getResultObject();
+		}
+		IWordGram wg = new WordGram();
+		wg.setId(Long.parseLong(id));
+		wg.setWords(term);
+		wg.setTense(tense);
+		wg.setNegation(isNegative);
+		wg.addPOS(IPOS.VERB_POS);
+		if (epistemicStatus != null)
+			wg.setEpistemicStatus(epistemicStatus);
+		if (invId !=  null)
+			wg.setInverseTerm(Long.parseLong(invId));
+		if (canonId !=  null)
+			wg.setCannonTerm(Long.parseLong(canonId));
+		//Before we store that, check for prior terms
+		boolean isInDB;
+		IWordGram nwg;
+		if (invId !=  null) {
+			isInDB = termExistsInDB(invId);
+			if (!isInDB) {
+				nwg = new WordGram();
+				nwg.setId(Long.parseLong(invId));
+				nwg.addPOS(IPOS.VERB_POS);
+				nwg.setWords(inverseTerm);
+				r = database.putNode(nwg);
+				if (r.hasError())
+					result.addErrorString(r.getErrorString());
+			}
+		}
+		if (canonId !=  null) {
+			isInDB = termExistsInDB(canonId);
+			if (!isInDB) {
+				nwg = new WordGram();
+				nwg.setId(Long.parseLong(canonId));
+				nwg.addPOS(IPOS.VERB_POS);
+				nwg.setWords(cannonicalTerm);
+				r = database.putNode(nwg);
+				if (r.hasError())
+					result.addErrorString(r.getErrorString());
+			}
+		}
+		isInDB = termExistsInDB(id);
+		if (isInDB) {
+			r = database.putNode(wg); 
+			if (r.hasError())
+				result.addErrorString(r.getErrorString());
+		}
+		
+		return result;
 	}
 }

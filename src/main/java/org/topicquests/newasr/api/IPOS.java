@@ -5,8 +5,9 @@ package org.topicquests.newasr.api;
 
 /**
  * @author jackpark
- * @see https://universaldependencies.org/u/pos/all.html
+ * @see https://universaldependencies.org/u/pos/
  * Important @see https://spacy.io/usage/linguistic-features
+ * @see https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
  */
 public interface IPOS {
 
@@ -22,7 +23,8 @@ public interface IPOS {
 		NOUN_POS	= "noun",
 		PREP_POS	= "prp",  	// preposition --> adb is cover for preposition and postposition terms
 		ADP_POS		= "adp",
-		SCONJ_POS	= "sconj";
+		SCONJ_POS	= "sconj",
+		VERB_POS	= "verb";
 	//TODO this is far from complete and possibly wrong
 		
 		
