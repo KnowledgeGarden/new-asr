@@ -50,7 +50,7 @@ predicates = [
   "add", "adds", "added", "added by",
   "affect", "affects", "affected", "affected by",
   "aggregate", "aggregates", "aggregated", "aggregated by",
-  ""
+  "believe", "believes", "believed"
 ]
 antMatcher = PhraseMatcher(nlp.vocab)
 predMatcher = PhraseMatcher(nlp.vocab)
@@ -60,33 +60,34 @@ antMatcher.add("prelist", antPatterns)
 predMatcher.add("predlist", predPatterns)
 
 # doc = nlp("Greenhouse gasses have been thought to cause climate change")
-doc = nlp("Climate change has been thought to have been caused by greenhouse gasses")
+# doc = nlp("Climate change has been thought to have been caused by greenhouse gasses")
+# doc = nlp("Scientists believe  that co2 causes climate change")
+doc = nlp("Scientists believe that climate change is caused by  carbon dioxide")
 antMatches = antMatcher(doc)
 predMatches = predMatcher(doc)
 
-data = {}
-i = 0
+data = []
+ants = []
+jsn = {}
+
 for mid, start, end in antMatches:
-  data['strt'+str(i)] = start
-  data['enx'+str(i)] = end
+  jsn['strt'] = start
+  jsn['enx'] = end
   foo = doc[start:end]
-  #print(foo)
-  #print(data['strt'+str(i)])
-  data['txt'+str(i)] = str(foo)
-  #print(data['txt'+str(i)])
-  i += 1
+  jsn['txt'] = str(foo)
+  ants.append(jsn)
+  jsn = {}
+data.append(ants)
 
-antsJson = json.dumps(data)
-data = {}
-i =0
+preds = []
+jsn = {}
 for mid, start, end in predMatches:
-  data['strt'+str(i)] = start
-  data['enx'+str(i)] = end
-  bar = doc[start:end]
-  data['txt'+str(i)] = str(bar)
-  i += 1
+  jsn['strt'] = start
+  jsn['enx'] = end
+  foo = doc[start:end]
+  jsn['txt'] = str(foo)
+  preds.append(jsn)
+  jsn = {}
+data.append(preds)
 
-predsJson = json.dumps(data)
-
-print("ANTS: ",antsJson)
-print("PREDS: ",predsJson)
+print("DID: ",data)
