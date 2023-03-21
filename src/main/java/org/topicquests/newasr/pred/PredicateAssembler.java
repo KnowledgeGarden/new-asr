@@ -23,7 +23,7 @@ public class PredicateAssembler {
 		environment = e;
 	}
 
-	public IResult processSentencePredicates(long sentenceId, JsonObject predicates) {
+	public IResult processSentencePredicates(JsonObject sentence, JsonObject predicates) {
 		IResult result = new ResultPojo();
 		// TODO Auto-generated method stub
 		return result;
