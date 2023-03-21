@@ -118,16 +118,24 @@ public class PredicateAssembler {
 		JsonArray preds = predicates.get(_PREDICATES).deepCopy().getAsJsonArray();
 		int predCount = countPredicates(preds);
 		if (predCount == 1) 
-			processOnePredicate(sentence, predicates, result);
+			processOnePredicate(sentence, antecedents,predicates, result);
 		else
-			processSeveralPredicates(sentence, predicates, result);
+			processSeveralPredicates(sentence, antecedents, predicates, result);
 		return result;
 	}
 	
-	void processOnePredicate(JsonObject sentence, JsonArray predicate, IResult result) {
+	void processOnePredicate(JsonObject sentence, JsonArray ants, JsonArray predicate, IResult result) {
 		System.out.println("ProcessOne "+predicate);
+		int plen = predicate.size();
+		int alen = ants.size();
+		JsonObject je;
+		String thePred = "";
+		String temp;
+		for (int i=0;i<plen;i++) {
+			je = predicate.get(i).getAsJsonObject();
+		}
 	}
-	void processSeveralPredicates(JsonObject sentence, JsonArray predicates, IResult result) {
+	void processSeveralPredicates(JsonObject sentence, JsonArray ants, JsonArray predicates, IResult result) {
 		System.out.println("ProcessSeveral "+predicates);
 
 	}
