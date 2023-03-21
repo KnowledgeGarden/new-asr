@@ -84,6 +84,27 @@ public class PredicateAssembler {
 				'txt': 'cause'
 			}]
 		]
+		Sentence: Climate change has been thought to have been caused by greenhouse gasses
+		[
+			[{
+				'strt': 2,
+				'enx': 6,
+				'txt': 'has been thought to'
+			}, {
+				'strt': 2,
+				'enx': 8,
+				'txt': 'has been thought to have been'
+			}],
+			[{
+				'strt': 8,
+				'enx': 9,
+				'txt': 'caused'
+			}, {
+				'strt': 8,
+				'enx': 10,
+				'txt': 'caused by'
+			}]
+]
 	 ******************************/ 
 	/*
 	 * 

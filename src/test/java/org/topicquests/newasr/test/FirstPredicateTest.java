@@ -18,7 +18,8 @@ public class FirstPredicateTest extends TestingRoot {
 	private PredicateAssembler handler;
 	private final String
 		ONE_PRED	= "[[{'strt': 2, 'enx': 6, 'txt': 'have been thought to'}], [{'strt': 6, 'enx': 7, 'txt': 'cause'}]]",
-		TWO_PRED	= "[[{'strt': 5, 'enx': 6, 'txt': 'is'}], [{'strt': 1, 'enx': 2, 'txt': 'believe'}, {'strt': 6, 'enx': 7, 'txt': 'caused'}, {'strt': 6, 'enx': 8, 'txt': 'caused by'}]]";
+		TWO_PRED	= "[[{'strt': 5, 'enx': 6, 'txt': 'is'}], [{'strt': 1, 'enx': 2, 'txt': 'believe'}, {'strt': 6, 'enx': 7, 'txt': 'caused'}, {'strt': 6, 'enx': 8, 'txt': 'caused by'}]]",
+		THREE_PRED	= "[[{'strt': 2, 'enx': 6, 'txt': 'has been thought to'}, {'strt': 2, 'enx': 8, 'txt': 'has been thought to have been'}], [{'strt': 8, 'enx': 9, 'txt': 'caused'}, {'strt': 8, 'enx': 10, 'txt': 'caused by'}]]";
 	private JsonObject sentence;
 	/**
 	 * 
@@ -33,6 +34,8 @@ public class FirstPredicateTest extends TestingRoot {
 		ja = (JsonArray)JsonParser.parseString(TWO_PRED);
 		r = handler.processSentencePredicates(sentence, ja);
 		// more stuff
+		ja = (JsonArray)JsonParser.parseString(THREE_PRED);
+		r = handler.processSentencePredicates(sentence, ja);
 		environment.shutDown();
 		System.exit(0);
 	}
@@ -41,6 +44,8 @@ Counting: 1 [{"strt":6,"enx":7,"txt":"cause"}]
 ProcessOne [[{"strt":2,"enx":6,"txt":"have been thought to"}],[{"strt":6,"enx":7,"txt":"cause"}]]
 Counting: 2 [{"strt":1,"enx":2,"txt":"believe"},{"strt":6,"enx":7,"txt":"caused"},{"strt":6,"enx":8,"txt":"caused by"}]
 ProcessSeveral [[{"strt":5,"enx":6,"txt":"is"}],[{"strt":1,"enx":2,"txt":"believe"},{"strt":6,"enx":7,"txt":"caused"},{"strt":6,"enx":8,"txt":"caused by"}]]
+Counting: 1 [{"strt":8,"enx":9,"txt":"caused"},{"strt":8,"enx":10,"txt":"caused by"}]
+ProcessOne [[{"strt":2,"enx":6,"txt":"has been thought to"},{"strt":2,"enx":8,"txt":"has been thought to have been"}],[{"strt":8,"enx":9,"txt":"caused"},{"strt":8,"enx":10,"txt":"caused by"}]]
 
  */
 }
