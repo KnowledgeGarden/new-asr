@@ -17,7 +17,8 @@ public class TestingFramework {
 		//new BootstrapTest();
 		//new FirstNodeTest();
 		//new SecondNodeTest();
-		new PredicateImportTest();
+		//new PredicateImportTest();
+		new FirstPredicateTest();
 	}
 
 }

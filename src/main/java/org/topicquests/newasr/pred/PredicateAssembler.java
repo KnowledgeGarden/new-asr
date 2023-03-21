@@ -58,7 +58,32 @@ public class PredicateAssembler {
 					'txt': 'caused by'
 				}]
 			]
-		Sentence:
+		Sentence: Scientists believe  that co2 causes climate change
+		[
+			[],
+			[{
+				'strt': 1,
+				'enx': 2,
+				'txt': 'believe'
+			}, {
+				'strt': 5,
+				'enx': 6,
+				'txt': 'causes'
+			}]
+		]
+		Sentence: Greenhouse gasses have been thought to cause climate change
+		[
+			[{
+				'strt': 2,
+				'enx': 6,
+				'txt': 'have been thought to'
+			}],
+			[{
+				'strt': 6,
+				'enx': 7,
+				'txt': 'cause'
+			}]
+		]
 	 ******************************/ 
 	/*
 	 * 
@@ -71,10 +96,20 @@ public class PredicateAssembler {
 		JsonArray antecedents = predicates.get(_ANTECENDS).deepCopy().getAsJsonArray();
 		JsonArray preds = predicates.get(_PREDICATES).deepCopy().getAsJsonArray();
 		int predCount = countPredicates(preds);
-		// TODO Auto-generated method stub
+		if (predCount == 1) 
+			processOnePredicate(sentence, predicates, result);
+		else
+			processSeveralPredicates(sentence, predicates, result);
 		return result;
 	}
 	
+	void processOnePredicate(JsonObject sentence, JsonArray predicate, IResult result) {
+		System.out.println("ProcessOne "+predicate);
+	}
+	void processSeveralPredicates(JsonObject sentence, JsonArray predicates, IResult result) {
+		System.out.println("ProcessSeveral "+predicates);
+
+	}
 	int countPredicates(JsonArray preds) {
 		int result = 0;
 		int len = preds.size();
@@ -85,12 +120,12 @@ public class PredicateAssembler {
 			je = preds.get(i).getAsJsonObject();
 			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
 			if (temp > startField) {
-				if (startField > 0)
+				//if (startField > 0)
 					result++;
 				startField = temp;
 			}
 		}
-		
+		System.out.println("Counting: "+result+" "+preds);
 		return result;
 	}
 }
