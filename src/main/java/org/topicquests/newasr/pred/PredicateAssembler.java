@@ -171,10 +171,11 @@ public class PredicateAssembler {
 	}
 	
 	void processSeveralPredicates(ISentence sentence, JsonArray ants, JsonArray predicates, int predicateCount, IResult result) {
-		System.out.println("ProcessSeveral "+predicates);
+		System.out.println("ProcessSeveral "+predicateCount+" "+predicates);
 		// Results go here
 		// They are to be JsonObjects with start location and predicate phrase txt
 		JsonArray results = new JsonArray();
+		sentence.setPredicatePhrases(results);
 		JsonObject workingObject;
 		JsonArray antCluster = new JsonArray();
 		JsonArray predCluster = new JsonArray();
@@ -183,9 +184,10 @@ public class PredicateAssembler {
 		int startField= 0;
 		int temp;
 		// Predicates first
-		for (int i=0;i<predicateCount;i++) {
+		for (int i=0;i<predicates.size();i++) {
 			je = predicates.get(i).getAsJsonObject();
 			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
+			//System.out.println("GOT: "+je);
 			if (i == 0)  {
 				tempCluster = new JsonArray();
 				tempCluster.add(je);
@@ -199,10 +201,18 @@ public class PredicateAssembler {
 				startField = temp;
 			}
 		}
+		if (!predCluster.contains(tempCluster))
+			predCluster.add(tempCluster);
+		System.out.println("PREDCLUSTER\n"+predCluster);
+		//[[{"strt":1,"enx":2,"txt":"believe"}],[{"str[[{"strt":1,"enx":2,"txt":"believe"}],[{"strt":6,"enx":7,"txt":"caused"},{"strt":6,"enx":8,"txt":"caused by"}]]
+
+
 		int antCount = countAntecedents(ants);
-		// wonder if they are the same
+		// wonder if they are the same - not always
+		// If count == 1, then we must figure out which pred it belongs to
+		// Otherwise, we must pair ants against preds, e.g. an ant's end position is just before its pred
 		System.out.println("Ants-Preds "+antCount+" "+predicateCount);
-		for (int i=0;i<antCount;i++) {
+		for (int i=0;i<ants.size();i++) {
 			je = ants.get(i).getAsJsonObject();
 			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
 			if (i == 0)  {
@@ -218,7 +228,50 @@ public class PredicateAssembler {
 				startField = temp;
 			}
 		}
+		if (!antCluster.contains(tempCluster))
+			antCluster.add(tempCluster);
+		System.out.println("ANTCLUSTER\n"+antCluster);
+		//[[{"strt":5,"enx":6,"txt":"is"}]]
+		int len = antCluster.size();
+		int where =-1;
+		JsonArray tx, pMatch =null;
+		if (len > 0) {
+			for (int i=0;i<len;i++) {
+				tx = antCluster.get(i).getAsJsonArray();
+				je = tx.get(0).getAsJsonObject();
+				where = je.get("enx").getAsJsonPrimitive().getAsInt();
+				where = matchAntToPreds(where, predCluster);
+				if (where > -1) {
+					pMatch = predCluster.get(where).getAsJsonArray();
+				}
+				System.out.println("PREDMATCH\n"+je+"\n"+pMatch);
+				if (pMatch != null) {
+					je = this._processOnePredicate(tx, pMatch);
+					results.add(je);
+				}
+				if (where > 0) {
+					//we have the problem of skipping over predicates without antecedentss
+				}
+			}
+		}
 		System.out.println("PS\n"+antCluster+"\n"+predCluster);
+	}
+	
+	int matchAntToPreds(int antEnd, JsonArray predClusters) {
+		System.out.println("MATCHING "+antEnd+" "+predClusters);
+		JsonArray result = null;
+		JsonArray temp;
+		JsonObject px;
+		int where=-1;
+		for (int i=0;i<predClusters.size(); i++) {
+			temp = predClusters.get(i).getAsJsonArray();
+			px = temp.get(0).getAsJsonObject();
+			where = px.get("strt").getAsJsonPrimitive().getAsInt();
+			if (antEnd == where ) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	
@@ -226,7 +279,7 @@ public class PredicateAssembler {
 		int result = 0;
 		int len = preds.size();
 		JsonObject je;
-		int startField= 0;
+		int startField= -1;
 		int temp;
 		for (int i=0;i<len;i++) {
 			je = preds.get(i).getAsJsonObject();
@@ -244,7 +297,7 @@ public class PredicateAssembler {
 		int result = 0;
 		int len = preds.size();
 		JsonObject je;
-		int startField= 0;
+		int startField= 1;
 		int temp;
 		for (int i=0;i<len;i++) {
 			je = preds.get(i).getAsJsonObject();
