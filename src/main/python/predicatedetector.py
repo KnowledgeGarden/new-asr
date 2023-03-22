@@ -60,9 +60,10 @@ antMatcher.add("prelist", antPatterns)
 predMatcher.add("predlist", predPatterns)
 
 #doc = nlp("Greenhouse gasses have been thought to cause climate change")
-doc = nlp("Climate change has been thought to have been caused by greenhouse gasses")
+#doc = nlp("Climate change has been thought to have been caused by greenhouse gasses")
 # doc = nlp("Scientists believe  that co2 causes climate change")
 #doc = nlp("Scientists believe that climate change is caused by  carbon dioxide")
+doc = nlp("Scientists have been thought to believe that climate change is caused by  carbon dioxide")
 antMatches = antMatcher(doc)
 predMatches = predMatcher(doc)
 
