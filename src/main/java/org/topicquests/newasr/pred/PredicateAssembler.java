@@ -130,17 +130,26 @@ public class PredicateAssembler {
 	
 	void processOnePredicate(ISentence sentence, JsonArray ants, JsonArray predicate, IResult result) {
 		System.out.println("ProcessOne "+predicate);
+		JsonArray ja=new JsonArray();
+		JsonObject jo = _processOnePredicate(ants,predicate);
+		ja.add(jo);
+		sentence.setPredicatePhrases(ja);
+	}
+	
+	JsonObject _processOnePredicate(JsonArray ants, JsonArray predicate) {
 		int plen = predicate.size();
 		int alen = ants.size();
-		JsonObject je;
+		JsonObject je, jx =null;
 		String thePred = "";
 		String temp;
 		for (int i=0;i<plen;i++) {
 			je = predicate.get(i).getAsJsonObject();
 			temp =je.get(TEXT_FIELD).getAsString();
 			//System.out.println("FOO: "+temp.length()+" "+temp);
-			if (temp.length() > thePred.length())
+			if (temp.length() > thePred.length()) {
 				thePred = temp;
+				jx = je;
+			}
 			//System.out.println("BAR: "+temp);
 
 		}
@@ -148,11 +157,17 @@ public class PredicateAssembler {
 		for (int i=0;i<alen;i++) {
 			je = ants.get(i).getAsJsonObject();
 			temp =je.get(TEXT_FIELD).getAsString();
-			if (temp.length() > theAnt.length())
+			if (temp.length() > theAnt.length()) {
 				theAnt = temp;
+				jx = je;
+			}
 		}
 		String predPhrase = theAnt+" "+thePred.trim();
-		System.out.println("P1: "+predPhrase);
+		JsonObject jo = new JsonObject();
+		jo.add("strt", jx.get("strt"));
+		jo.addProperty("txt", predPhrase);
+		System.out.println("DID: "+jo);
+		return jo;
 	}
 	
 	void processSeveralPredicates(ISentence sentence, JsonArray ants, JsonArray predicates, int predicateCount, IResult result) {
@@ -205,6 +220,8 @@ public class PredicateAssembler {
 		}
 		System.out.println("PS\n"+antCluster+"\n"+predCluster);
 	}
+	
+	
 	int countPredicates(JsonArray preds) {
 		int result = 0;
 		int len = preds.size();
