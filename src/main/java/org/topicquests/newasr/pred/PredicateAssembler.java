@@ -114,13 +114,15 @@ public class PredicateAssembler {
 	 */
 	public IResult processSentencePredicates(JsonObject sentence, JsonArray predicates) {
 		IResult result = new ResultPojo();
-		JsonArray antecedents = predicates.get(_ANTECENDS).deepCopy().getAsJsonArray();
-		JsonArray preds = predicates.get(_PREDICATES).deepCopy().getAsJsonArray();
+		JsonArray antecedents = predicates.get(_ANTECENDS).getAsJsonArray();
+		System.out.println("ANTS: "+antecedents);
+		JsonArray preds = predicates.get(_PREDICATES).getAsJsonArray();
+		System.out.println("PREDS: "+preds);
 		int predCount = countPredicates(preds);
 		if (predCount == 1) 
-			processOnePredicate(sentence, antecedents,predicates, result);
+			processOnePredicate(sentence, antecedents,preds, result);
 		else
-			processSeveralPredicates(sentence, antecedents, predicates, result);
+			processSeveralPredicates(sentence, antecedents, preds, predCount, result);
 		return result;
 	}
 	
@@ -133,11 +135,73 @@ public class PredicateAssembler {
 		String temp;
 		for (int i=0;i<plen;i++) {
 			je = predicate.get(i).getAsJsonObject();
-		}
-	}
-	void processSeveralPredicates(JsonObject sentence, JsonArray ants, JsonArray predicates, IResult result) {
-		System.out.println("ProcessSeveral "+predicates);
+			temp =je.get(TEXT_FIELD).getAsString();
+			//System.out.println("FOO: "+temp.length()+" "+temp);
+			if (temp.length() > thePred.length())
+				thePred = temp;
+			//System.out.println("BAR: "+temp);
 
+		}
+		String theAnt = "";
+		for (int i=0;i<alen;i++) {
+			je = ants.get(i).getAsJsonObject();
+			temp =je.get(TEXT_FIELD).getAsString();
+			if (temp.length() > theAnt.length())
+				theAnt = temp;
+		}
+		String predPhrase = theAnt+" "+thePred.trim();
+		System.out.println("P1: "+predPhrase);
+	}
+	
+	void processSeveralPredicates(JsonObject sentence, JsonArray ants, JsonArray predicates, int predicateCount, IResult result) {
+		System.out.println("ProcessSeveral "+predicates);
+		// Results go here
+		// They are to be JsonObjects with start location and predicate phrase txt
+		JsonArray results = new JsonArray();
+		JsonObject workingObject;
+		JsonArray antCluster = new JsonArray();
+		JsonArray predCluster = new JsonArray();
+		JsonArray tempCluster = null;
+		JsonObject je;
+		int startField= 0;
+		int temp;
+		// Predicates first
+		for (int i=0;i<predicateCount;i++) {
+			je = predicates.get(i).getAsJsonObject();
+			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
+			if (i == 0)  {
+				tempCluster = new JsonArray();
+				tempCluster.add(je);
+				startField = temp;
+			} else if (temp == startField) {
+				tempCluster.add(je);
+			} else {
+				predCluster.add(tempCluster);
+				tempCluster = new JsonArray();
+				tempCluster.add(je);
+				startField = temp;
+			}
+		}
+		int antCount = countAntecedents(ants);
+		// wonder if they are the same
+		System.out.println("Ants-Preds "+antCount+" "+predicateCount);
+		for (int i=0;i<antCount;i++) {
+			je = ants.get(i).getAsJsonObject();
+			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
+			if (i == 0)  {
+				tempCluster = new JsonArray();
+				tempCluster.add(je);
+				startField = temp;
+			} else if (temp == startField) {
+				tempCluster.add(je);
+			} else {
+				antCluster.add(tempCluster);
+				tempCluster = new JsonArray();
+				tempCluster.add(je);
+				startField = temp;
+			}
+		}
+		System.out.println("PS\n"+antCluster+"\n"+predCluster);
 	}
 	int countPredicates(JsonArray preds) {
 		int result = 0;
@@ -154,7 +218,26 @@ public class PredicateAssembler {
 				startField = temp;
 			}
 		}
-		System.out.println("Counting: "+result+" "+preds);
+		System.out.println("CountingP: "+result+" "+preds);
 		return result;
 	}
+	int countAntecedents(JsonArray preds) {
+		int result = 0;
+		int len = preds.size();
+		JsonObject je;
+		int startField= 0;
+		int temp;
+		for (int i=0;i<len;i++) {
+			je = preds.get(i).getAsJsonObject();
+			temp = je.get(START_FIELD).getAsJsonPrimitive().getAsInt();
+			if (temp > startField) {
+				//if (startField > 0)
+					result++;
+				startField = temp;
+			}
+		}
+		System.out.println("CountingA: "+result+" "+preds);
+		return result;
+	}
+
 }
