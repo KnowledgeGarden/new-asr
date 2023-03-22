@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import org.topicquests.newasr.ASREnvironment;
 import org.topicquests.newasr.api.IAsrModel;
+import org.topicquests.newasr.api.ISentence;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 
@@ -106,13 +107,14 @@ public class PredicateAssembler {
 			}]
 ]
 	 ******************************/ 
+
 	/*
 	 * 
 	 * @param sentence
 	 * @param predicates
 	 * @return
 	 */
-	public IResult processSentencePredicates(JsonObject sentence, JsonArray predicates) {
+	public IResult processSentencePredicates(ISentence sentence, JsonArray predicates) {
 		IResult result = new ResultPojo();
 		JsonArray antecedents = predicates.get(_ANTECENDS).getAsJsonArray();
 		System.out.println("ANTS: "+antecedents);
@@ -126,7 +128,7 @@ public class PredicateAssembler {
 		return result;
 	}
 	
-	void processOnePredicate(JsonObject sentence, JsonArray ants, JsonArray predicate, IResult result) {
+	void processOnePredicate(ISentence sentence, JsonArray ants, JsonArray predicate, IResult result) {
 		System.out.println("ProcessOne "+predicate);
 		int plen = predicate.size();
 		int alen = ants.size();
@@ -153,7 +155,7 @@ public class PredicateAssembler {
 		System.out.println("P1: "+predPhrase);
 	}
 	
-	void processSeveralPredicates(JsonObject sentence, JsonArray ants, JsonArray predicates, int predicateCount, IResult result) {
+	void processSeveralPredicates(ISentence sentence, JsonArray ants, JsonArray predicates, int predicateCount, IResult result) {
 		System.out.println("ProcessSeveral "+predicates);
 		// Results go here
 		// They are to be JsonObjects with start location and predicate phrase txt
