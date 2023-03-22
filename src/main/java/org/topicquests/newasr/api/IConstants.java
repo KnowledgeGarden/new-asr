@@ -14,7 +14,7 @@ public interface IConstants {
 		KEY_FIELD		= "_key",
 		VALUE_FIELD		= "_val";
 	
-	// standard keys
+	// standard keys for {@link IWordGram}
 	public static final String
 		ID_KEY			= "id",
 		LOX_KEY			= "lox", 	// locators
@@ -32,4 +32,8 @@ public interface IConstants {
 		SYNONYM_KEY		= "synon",	// synonyms
 		ANTONYM_KEY		= "anton",	// antonyms
 		EXTENSION_KEY	= "extns";	// for extension properties
+	
+	public static final String
+		TEXT_FIELD		= "txt",
+		PRED_FIELD		= "preds";
 }
