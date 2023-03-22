@@ -252,18 +252,20 @@ public class PredicateAssembler {
 			where = je.get("strt").getAsJsonPrimitive().getAsInt();
 			where = matchAntToPreds(where, antCluster);
 			if (where > -1) {
-				pMatch = predCluster.get(where).getAsJsonArray();
+				pMatch = antCluster.get(where).getAsJsonArray();
 				if (pMatch != null) {
 					je = this._processOnePredicate(pMatch, tx);
 					results.add(je);
+					//System.out.println("PREDMATCH-1\n"+je);
 				}
 			} else {
 				je = this._processOnePredicate(null, tx);
 				results.add(je);
-			}
-			System.out.println("PREDMATCH\n"+je+"\n"+pMatch);
+				//System.out.println("PREDMATCH-2\n"+je);
+			} 
+			//System.out.println("PREDMATCH\n"+je+"\n"+pMatch);
 		}
-		System.out.println("PS\n"+antCluster+"\n"+predCluster);
+		//System.out.println("PS\n"+antCluster+"\n"+predCluster);
 	}
 	
 	int matchAntToPreds(int antEnd, JsonArray predClusters) {
