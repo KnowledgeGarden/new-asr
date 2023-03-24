@@ -3,7 +3,6 @@
  */
 package org.topicquests.newasr.impl;
 
-import org.topicquests.newasr.api.IConstants;
 import org.topicquests.newasr.api.IWordGram;
 
 import com.google.gson.JsonArray;
@@ -29,12 +28,12 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void setId(long id) {
-		data.addProperty(IConstants.ID_KEY, new Long(id));
+		data.addProperty(IWordGram.ID_KEY, new Long(id));
 	}
 
 	@Override
 	public long getId() {
-		return data.get(IConstants.ID_KEY).getAsLong();
+		return data.get(IWordGram.ID_KEY).getAsLong();
 	}
 
 	@Override
@@ -44,24 +43,24 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public String getWords() {
-		return data.get(IConstants.WORDS_KEY).getAsString();
+		return data.get(IWordGram.WORDS_KEY).getAsString();
 	}
 
 	@Override
 	public void setWords(String words) {
-		data.addProperty(IConstants.WORDS_KEY, words);
+		data.addProperty(IWordGram.WORDS_KEY, words);
 	}
 
 	@Override
 	public JsonArray listInLinks() {
-		JsonElement jo = data.get(IConstants.IN_KEY);
+		JsonElement jo = data.get(IWordGram.IN_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
 
 	@Override
 	public JsonArray listOutLinks() {
-		JsonElement jo = data.get(IConstants.OUT_KEY);
+		JsonElement jo = data.get(IWordGram.OUT_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -76,7 +75,7 @@ public class WordGram implements IWordGram {
 		//jo.addProperty(Long.toString(sentenceId), gramId);
 		//ja.add(jo);
 		String thelink = Long.toString(sentenceId) + ","  +Long.toString(gramId);
-		data.addProperty(IConstants.IN_KEY, thelink);
+		data.addProperty(IWordGram.IN_KEY, thelink);
 	}
 
 	@Override
@@ -89,12 +88,12 @@ public class WordGram implements IWordGram {
 		//jo.addProperty(Long.toString(sentenceId), gramId);
 		//ja.add(jo);
 		String thelink = Long.toString(sentenceId) + ","  +Long.toString(gramId);
-		data.addProperty(IConstants.OUT_KEY, thelink);
+		data.addProperty(IWordGram.OUT_KEY, thelink);
 	}
 
 	@Override
 	public JsonArray listTopicLocators() {
-		JsonElement jo = data.get(IConstants.LOX_KEY);
+		JsonElement jo = data.get(IWordGram.LOX_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -106,42 +105,42 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(locator);
-		data.add(IConstants.LOX_KEY, ja);
+		data.add(IWordGram.LOX_KEY, ja);
 	}
 	@Override
 	public void setTopicLocators(JsonArray locators) {
-		data.add(IConstants.LOX_KEY, locators);
+		data.add(IWordGram.LOX_KEY, locators);
 	}
 
 
 	@Override
 	public String getDBpedia() {
-		JsonElement jo = data.get(IConstants.DBPED_KEY);
+		JsonElement jo = data.get(IWordGram.DBPED_KEY);
 		if (jo == null) return null;
 		return jo.getAsString();
 	}
 
 	@Override
 	public void setDBpedia(String dbPediaJson) {
-		data.addProperty(IConstants.DBPED_KEY, dbPediaJson);
+		data.addProperty(IWordGram.DBPED_KEY, dbPediaJson);
 
 	}
 
 	@Override
 	public String getWikidata() {
-		JsonElement jo = data.get(IConstants.WIKID_KEY);
+		JsonElement jo = data.get(IWordGram.WIKID_KEY);
 		if (jo == null) return null;
 		return jo.getAsString();
 	}
 
 	@Override
 	public void setWikidata(String wikidataId) {
-		data.addProperty(IConstants.WIKID_KEY, wikidataId);
+		data.addProperty(IWordGram.WIKID_KEY, wikidataId);
 	}
 
 	@Override
 	public JsonArray listPOS() {
-		JsonElement jo = data.get(IConstants.POS_KEY);
+		JsonElement jo = data.get(IWordGram.POS_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -153,59 +152,59 @@ public class WordGram implements IWordGram {
 			ja = new JsonArray();
 		}
 		ja.add(pos);
-		data.add(IConstants.POS_KEY, ja);
+		data.add(IWordGram.POS_KEY, ja);
 	}
 	
 	@Override
 	public void setPOS(JsonArray pos) {
-		data.add(IConstants.POS_KEY, pos);
+		data.add(IWordGram.POS_KEY, pos);
 	}
 
 
 	@Override
 	public void setInverseTerm(long inverseTermId) {
-		data.addProperty(IConstants.INVERSE_KEY, inverseTermId);
+		data.addProperty(IWordGram.INVERSE_KEY, inverseTermId);
 	}
 
 	@Override
 	public long getInverseTerm() {
-		JsonElement jo = data.get(IConstants.INVERSE_KEY);
+		JsonElement jo = data.get(IWordGram.INVERSE_KEY);
 		if (jo == null) return -1;
 		return jo.getAsLong();
 	}
 
 	@Override
 	public void setCannonTerm(long cannonTermId) {
-		data.addProperty(IConstants.CANNON_KEY, cannonTermId);
+		data.addProperty(IWordGram.CANNON_KEY, cannonTermId);
 	}
 
 	@Override
 	public long getCannonTerm() {
-		JsonElement jo = data.get(IConstants.CANNON_KEY);
+		JsonElement jo = data.get(IWordGram.CANNON_KEY);
 		if (jo == null) return -1;
 		return jo.getAsLong();
 	}
 
 	@Override
 	public void addSynonymTerm(long synonymTermId) {
-		data.addProperty(IConstants.SYNONYM_KEY, synonymTermId);
+		data.addProperty(IWordGram.SYNONYM_KEY, synonymTermId);
 	}
 
 	@Override
 	public JsonArray listSynonyms() {
-		JsonElement jo = data.get(IConstants.SYNONYM_KEY);
+		JsonElement jo = data.get(IWordGram.SYNONYM_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
 
 	@Override
 	public void addAntonymTerm(long antonymTermId) {
-		data.addProperty(IConstants.ANTONYM_KEY, antonymTermId);
+		data.addProperty(IWordGram.ANTONYM_KEY, antonymTermId);
 	}
 
 	@Override
 	public JsonArray listAntonyms() {
-		JsonElement jo = data.get(IConstants.ANTONYM_KEY);
+		JsonElement jo = data.get(IWordGram.ANTONYM_KEY);
 		if (jo == null) return null;
 		return jo.getAsJsonArray();
 	}
@@ -222,32 +221,32 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void addExtensionProperty(String key, String value) {
-		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonElement je = data.get(IWordGram.EXTENSION_KEY);
 		JsonObject extendedProperties = null;
 		if (je == null) {
 			extendedProperties = new JsonObject();
-			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+			data.add(IWordGram.EXTENSION_KEY, extendedProperties);
 		}
 		extendedProperties.addProperty(key, value);
 	}
 /*	@Override
 	public void addExtensionProperty(String key, JsonObject value) {
-		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonElement je = data.get(IWordGram.EXTENSION_KEY);
 		JsonObject extendedProperties = null;
 		if (je == null) {
 			extendedProperties = new JsonObject();
-			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+			data.add(IWordGram.EXTENSION_KEY, extendedProperties);
 		}
 		extendedProperties.add(key, value);
 	}
 
 	@Override
 	public void addExtensionProperty(String key, JsonArray value) {
-		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonElement je = data.get(IWordGram.EXTENSION_KEY);
 		JsonObject extendedProperties = null;
 		if (je == null) {
 			extendedProperties = new JsonObject();
-			data.add(IConstants.EXTENSION_KEY, extendedProperties);
+			data.add(IWordGram.EXTENSION_KEY, extendedProperties);
 		}
 		extendedProperties.add(key, value);
 	}
@@ -255,7 +254,7 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public JsonElement getExtensionProperty(String key) {
-		JsonElement je = data.get(IConstants.EXTENSION_KEY);
+		JsonElement je = data.get(IWordGram.EXTENSION_KEY);
 		JsonObject extendedProperties = null;
 		if (je == null) 
 			return null;
@@ -266,31 +265,31 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void setTense(String tense) {
-		data.addProperty(IConstants.TENSE_KEY, tense);
+		data.addProperty(IWordGram.TENSE_KEY, tense);
 	}
 
 	@Override
 	public String getTense() {
-		JsonElement jo = data.get(IConstants.TENSE_KEY);
+		JsonElement jo = data.get(IWordGram.TENSE_KEY);
 		if (jo == null) return null;
 		return jo.getAsString();
 	}
 
 	@Override
 	public void setEpistemicStatus(String status) {
-		data.addProperty(IConstants.EPI_KEY, status);
+		data.addProperty(IWordGram.EPI_KEY, status);
 	}
 
 	@Override
 	public String getEpistemicStatus() {
-		JsonElement jo = data.get(IConstants.EPI_KEY);
+		JsonElement jo = data.get(IWordGram.EPI_KEY);
 		if (jo == null) return null;
 		return jo.getAsString();
 	}
 
 	@Override
 	public JsonObject getExtensionPropeties() {
-		JsonElement extendedProperties = data.get(IConstants.EXTENSION_KEY);
+		JsonElement extendedProperties = data.get(IWordGram.EXTENSION_KEY);
 		if (extendedProperties == null)
 			return null;
 		return extendedProperties.getAsJsonObject();
@@ -298,12 +297,12 @@ public class WordGram implements IWordGram {
 
 	@Override
 	public void setNegation(boolean isNeg) {
-		data.addProperty(IConstants.NEGATION_KEY, isNeg);
+		data.addProperty(IWordGram.NEGATION_KEY, isNeg);
 	}
 
 	@Override
 	public boolean getNegation() {
-		JsonElement je = data.get(IConstants.NEGATION_KEY);
+		JsonElement je = data.get(IWordGram.NEGATION_KEY);
 		if (je == null)
 			return false;
 		return je.getAsBoolean();
