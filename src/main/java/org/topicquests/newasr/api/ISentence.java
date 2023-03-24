@@ -11,6 +11,9 @@ import com.google.gson.JsonObject;
  *
  */
 public interface ISentence extends IAddressable {
+	public static final String
+		TEXT_FIELD		= "txt",
+		PRED_FIELD		= "preds";
 
 	JsonObject getData();
 	

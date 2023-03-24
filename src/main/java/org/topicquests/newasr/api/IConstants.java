@@ -17,7 +17,4 @@ public interface IConstants {
 	public static final String
 		ID_KEY			= "id";
 	
-	public static final String
-		TEXT_FIELD		= "txt",
-		PRED_FIELD		= "preds";
 }

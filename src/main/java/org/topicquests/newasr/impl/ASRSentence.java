@@ -38,22 +38,22 @@ public class ASRSentence implements ISentence {
 
 	@Override
 	public void setText(String text) {
-		data.addProperty(IConstants.TEXT_FIELD, text);
+		data.addProperty(ISentence.TEXT_FIELD, text);
 	}
 
 	@Override
 	public String getText() {
-		return data.get(IConstants.TEXT_FIELD).getAsString();
+		return data.get(ISentence.TEXT_FIELD).getAsString();
 	}
 
 	@Override
 	public void setPredicatePhrases(JsonArray preds) {
-		data.add(IConstants.PRED_FIELD, preds);
+		data.add(ISentence.PRED_FIELD, preds);
 	}
 
 	@Override
 	public JsonArray getPredicatePhrases() {
-		JsonElement je = data.get(IConstants.PRED_FIELD);
+		JsonElement je = data.get(ISentence.PRED_FIELD);
 		if (je != null)
 			return je.getAsJsonArray();
 		return null;
